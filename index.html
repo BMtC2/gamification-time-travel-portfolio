@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Travel Portfolio</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #EEF2F7;
+  --bg2:     #E4EAF2;
+  --surface: #F7F9FC;
+  --border:  #C8D4E3;
+  --border2: #B0C0D4;
+  --navy:    #1B3A5C;
+  --navy2:   #0F2540;
+  --blue:    #2563EB;
+  --ice:     #0EA5E9;
+  --t1:      #0F1C2E;
+  --t2:      #2D4057;
+  --t3:      #64748B;
+  --t4:      #94A3B8;
+  --ok:      #0F766E;
+  --okbg:    #F0FDFA;
+  --warn:    #B45309;
+  --warnbg:  #FFFBEB;
+  --err:     #B91C1C;
+  --errbg:   #FEF2F2;
+  --fn-cond: 'IBM Plex Sans Condensed', sans-serif;
+  --fn-mono: 'IBM Plex Mono', monospace;
+  --fn-sans: 'IBM Plex Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.55}
+
+/* ── SCREENS ── */
+.screen{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .42s ease,transform .42s ease;
+  transform:translateY(14px);
+  overflow-y:auto;
+  padding:2rem 1.5rem;
+  background:var(--bg);
+}
+.screen.active{opacity:1;pointer-events:all;transform:translateY(0)}
+.screen.exit-up{opacity:0;transform:translateY(-18px);pointer-events:none}
+
+/* ── PROGRESS ── */
+.prule{position:fixed;top:0;left:0;height:2px;background:var(--blue);transition:width .5s ease;z-index:999;pointer-events:none}
+.prule::after{content:'';position:absolute;right:-20px;top:0;width:40px;height:2px;background:var(--ice);filter:blur(4px)}
+
+/* ── TYPE ── */
+.eyebrow{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:.875rem}
+.d1{font-family:var(--fn-cond);font-size:clamp(2.5rem,7vw,5rem);font-weight:700;color:var(--t1);letter-spacing:-.022em;line-height:1.0;margin-bottom:1rem}
+.d2{font-family:var(--fn-cond);font-size:clamp(1.6rem,4vw,2.75rem);font-weight:700;color:var(--t1);letter-spacing:-.02em;line-height:1.05;margin-bottom:.75rem}
+.body-lg{font-size:15px;font-weight:300;color:var(--t3);line-height:1.75;max-width:520px}
+
+/* ── BUTTONS ── */
+.btn{font-family:var(--fn-cond);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--border2);background:var(--surface);color:var(--t2);padding:.65rem 1.375rem;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.5rem;white-space:nowrap}
+.btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bg)}
+.btn-primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy2);border-color:var(--navy2);color:#fff}
+.btn-lg{font-size:14px;padding:.875rem 2rem;letter-spacing:.1em}
+
+.nav-back{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);background:none;border:none;cursor:pointer;padding:.4rem 0;transition:color .15s;display:inline-flex;align-items:center;gap:.625rem}
+.nav-back::before{content:'';display:block;width:18px;height:1px;background:currentColor;transition:width .2s}
+.nav-back:hover{color:var(--t2)}
+.nav-back:hover::before{width:26px}
+
+/* ── YEAR ── */
+.year-grid{display:grid;grid-template-columns:repeat(9,1fr);border:1px solid var(--border)}
+@media(max-width:480px){.year-grid{grid-template-columns:repeat(3,1fr)}}
+.yb{font-family:var(--fn-mono);font-size:13px;font-weight:500;color:var(--t3);background:var(--surface);border:none;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:.75rem .25rem;cursor:pointer;transition:all .12s;text-align:center}
+.yb:last-child{border-right:none}
+.yb:hover{background:var(--bg2);color:var(--t1)}
+.yb.on{background:var(--navy);color:#fff;border-color:var(--navy);z-index:1}
+.era-note{display:none;padding:.75rem 1rem;background:var(--surface);border:1px solid var(--border);border-left:2px solid var(--blue);font-size:12.5px;color:var(--t3);line-height:1.6;margin-top:1px}
+.era-note.vis{display:block}
+.era-note strong{color:var(--t1);font-weight:600}
+
+/* ── HERO ── */
+#s1{justify-content:center}
+.hero-wrap{max-width:640px;width:100%}
+.hero-meta{display:flex;align-items:center;gap:1.25rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.hero-stat{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--t4)}
+.hero-stat strong{display:block;font-size:13px;font-weight:600;color:var(--t2);letter-spacing:0;margin-top:.1rem;font-family:var(--fn-cond)}
+
+/* ── INDUSTRY ── */
+.ind-screen{justify-content:flex-start;padding-top:2rem}
+.ind-wrap{max-width:900px;width:100%}
+.ind-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem}
+.ind-meta{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4)}
+.step-track{display:flex;align-items:center}
+.st-node{width:7px;height:7px;border:1px solid var(--border2);background:var(--surface);transition:all .3s;flex-shrink:0}
+.st-node.done{background:var(--blue);border-color:var(--blue)}
+.st-node.active{background:var(--navy);border-color:var(--navy)}
+.st-edge{width:20px;height:1px;background:var(--border2);transition:background .3s}
+.st-edge.done{background:var(--blue)}
+.ind-title-row{padding-bottom:1rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem}
+.ind-kicker{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:.35rem;display:block}
+.ind-title{font-family:var(--fn-cond);font-size:clamp(1.4rem,3.5vw,2.25rem);font-weight:700;color:var(--t1);letter-spacing:-.015em;display:flex;align-items:center;gap:.625rem}
+.ind-color-mark{width:3px;height:1.6em;flex-shrink:0}
+.ind-note{font-family:var(--fn-mono);font-size:10px;color:var(--t4);letter-spacing:.04em;margin-top:.3rem}
+
+/* Stock cards — 3 col desktop, 1 col mobile */
+.stock-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-bottom:1.25rem;
+}
+@media(max-width:600px){.stock-cards{grid-template-columns:1fr}}
+
+.sc-card{background:var(--surface);padding:1.25rem;cursor:pointer;transition:background .12s;position:relative;display:flex;flex-direction:column;gap:.5rem}
+.sc-card:hover:not(.sc-na){background:var(--bg2)}
+.sc-card.sc-on{background:#EBF2FF}
+.sc-card.sc-on::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)}
+.sc-card.sc-na{opacity:.32;cursor:not-allowed}
+.sc-ticker{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.12em;color:var(--t4)}
+.sc-name{font-family:var(--fn-cond);font-size:19px;font-weight:700;color:var(--t1);letter-spacing:-.01em;line-height:1.15}
+.sc-desc{font-size:12.5px;color:var(--t3);line-height:1.55;flex:1}
+.sc-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:.25rem}
+.sc-check-wrap{width:20px;height:20px;border:1px solid var(--border2);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .12s}
+.sc-card.sc-on .sc-check-wrap{background:var(--blue);border-color:var(--blue)}
+.sc-na-label{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);padding:.25em .6em;border:1px solid var(--border)}
+.sc-sel-label{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);display:none}
+.sc-card.sc-on .sc-sel-label{display:block}
+
+.ind-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.ind-prompt{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.1em;color:var(--t4)}
+.ind-prompt.chosen{color:var(--ok)}
+
+/* ── ALLOC ── */
+#s3{justify-content:center}
+.alloc-wrap{max-width:540px;width:100%}
+.budget-strip{display:flex;align-items:flex-end;justify-content:space-between;padding:1rem 1.125rem;background:var(--navy);margin-bottom:1px}
+.bs-label{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:.2rem}
+.bs-val{font-family:var(--fn-mono);font-size:clamp(1.5rem,5vw,2rem);font-weight:600;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.bs-rem{font-family:var(--fn-mono);font-size:11px;font-weight:500;font-variant-numeric:tabular-nums;text-align:right}
+.bs-rem.ok{color:#5EEAD4}
+.bs-rem.warn{color:#FCD34D}
+.bs-rem.err{color:#FCA5A5}
+.bbar-wrap{height:2px;background:var(--border);margin-bottom:1px}
+.bbar{height:100%;background:var(--blue);transition:width .25s}
+.bbar.done{background:var(--ok)}
+.bbar.over{background:var(--err)}
+.alloc-table{border:1px solid var(--border)}
+.alloc-row{display:flex;align-items:center;gap:.875rem;padding:.75rem 1rem;border-bottom:1px solid var(--border);background:var(--surface);transition:background .12s}
+.alloc-row:last-child{border-bottom:none}
+.alloc-row:hover{background:var(--bg)}
+.ar-bar{width:2px;height:28px;flex-shrink:0}
+.ar-info{flex:1;min-width:0}
+.ar-name{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1)}
+.ar-ticker{font-family:var(--fn-mono);font-size:10px;color:var(--t4);letter-spacing:.08em;margin-top:.1rem}
+.ar-ctrl{display:flex;align-items:center;gap:.5rem}
+.ar-btn{width:28px;height:28px;border:1px solid var(--border2);background:var(--bg);color:var(--t2);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;font-family:var(--fn-sans);flex-shrink:0}
+.ar-btn:hover:not(:disabled){background:var(--navy);color:#fff;border-color:var(--navy)}
+.ar-btn:disabled{opacity:.2;cursor:not-allowed}
+.ar-amt{font-family:var(--fn-mono);font-size:13px;font-weight:600;color:var(--t1);text-align:center;min-width:64px;font-variant-numeric:tabular-nums}
+.ar-amt small{display:block;font-size:9px;font-weight:400;color:var(--t4);letter-spacing:.05em;margin-top:.1rem}
+
+/* ── TIMELINE ── */
+#s4{background:var(--navy2);justify-content:center;overflow:hidden}
+.tl-grid-bg{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(255,255,255,.022) 59px,rgba(255,255,255,.022) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(255,255,255,.022) 59px,rgba(255,255,255,.022) 60px)}
+.tl-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.035) 3px,rgba(0,0,0,.035) 4px);pointer-events:none}
+.tl-content{position:relative;z-index:10;max-width:680px;width:100%;padding:0 1.5rem;text-align:center}
+.tl-status{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:.75rem;justify-content:center;margin-bottom:1.25rem}
+.tl-status::before,.tl-status::after{content:'';flex:1;max-width:80px;height:1px;background:rgba(255,255,255,.1)}
+.tl-year{font-family:var(--fn-mono);font-size:clamp(4.5rem,15vw,11rem);font-weight:600;color:#fff;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 0 100px rgba(14,165,233,.2);transition:opacity .055s;margin-bottom:.625rem}
+.tl-era{font-family:var(--fn-mono);font-size:10.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ice);min-height:1.4em;margin-bottom:.625rem}
+.tl-ms{font-family:var(--fn-sans);font-size:13px;font-weight:300;color:rgba(255,255,255,.3);min-height:1.6em;line-height:1.6;padding:0 1rem}
+.tl-track-wrap{margin:1.75rem auto 0;max-width:440px}
+.tl-track{height:1px;background:rgba(255,255,255,.1)}
+.tl-fill{height:1px;background:var(--ice);box-shadow:0 0 10px var(--ice);transition:width .18s}
+.tl-track-labels{display:flex;justify-content:space-between;margin-top:.5rem;font-family:var(--fn-mono);font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.06em}
+.tl-cta{display:none;flex-direction:column;align-items:center;gap:.75rem;margin-top:2rem}
+.tl-cta.vis{display:flex}
+.tl-cta-note{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.22)}
+.flash-el{position:fixed;inset:0;background:#fff;pointer-events:none;z-index:500;opacity:0;transition:opacity .08s}
+.flash-el.on{opacity:.75}
+
+/* ════════════════════════════════
+   RESULTS — FULLY RESPONSIVE
+════════════════════════════════ */
+#s5{justify-content:flex-start;align-items:stretch;padding:0;overflow-y:auto}
+.rpage{max-width:1060px;margin:0 auto;padding:1.75rem 1rem 4rem;width:100%}
+@media(min-width:600px){.rpage{padding:2.5rem 1.5rem 4rem}}
+
+/* Stat bar — 2×2 grid on mobile, 4-col on desktop */
+.stat-bar{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:1px solid var(--border);
+  background:var(--border); /* gap colour */
+  gap:1px;
+  margin-bottom:1px;
+}
+@media(min-width:600px){
+  .stat-bar{
+    grid-template-columns:1fr 1fr 1fr 1fr;
+  }
+}
+.sb-cell{padding:.875rem 1rem;background:var(--surface)}
+@media(min-width:600px){.sb-cell{padding:1.125rem 1.25rem}}
+.sb-lbl{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.35rem}
+.sb-val{font-family:var(--fn-mono);font-size:clamp(1rem,3.5vw,1.375rem);font-weight:600;color:var(--t1);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sb-val.pos{color:var(--ok)}
+.sb-val.neg{color:var(--err)}
+.sb-sub{font-size:11px;color:var(--t4);margin-top:.15rem}
+
+/* Headline */
+.r-headline{padding:.875rem 1rem;background:var(--navy);margin-bottom:1.5rem}
+@media(min-width:600px){.r-headline{padding:.875rem 1.25rem}}
+.r-headline-text{font-family:var(--fn-cond);font-size:clamp(13px,2.5vw,14px);font-weight:400;color:rgba(255,255,255,.55);line-height:1.5}
+.r-headline-text strong{color:rgba(255,255,255,.9);font-weight:600}
+
+/* Two-col: stacks on mobile */
+.r-cols{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1px;
+  background:var(--border);
+  margin-bottom:1px;
+}
+@media(min-width:680px){.r-cols{grid-template-columns:1fr 1fr}}
+.r-panel{background:var(--surface)}
+
+.ph{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border)}
+@media(min-width:600px){.ph{padding:.55rem 1.125rem}}
+.ph-title{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4)}
+
+/* Breakdown rows */
+.bd-row{display:flex;align-items:center;gap:.75rem;padding:.875rem 1rem;border-bottom:1px solid var(--border);opacity:0;transform:translateX(6px);transition:opacity .3s,transform .3s}
+.bd-row:last-child{border-bottom:none}
+.bd-row.in{opacity:1;transform:translateX(0)}
+@media(min-width:600px){.bd-row{padding:.875rem 1.125rem;gap:.875rem}}
+.bd-bar{width:2px;height:32px;flex-shrink:0}
+.bd-info{flex:1;min-width:0}
+.bd-name{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1)}
+.bd-sub{font-size:11px;color:var(--t4);margin-top:.1rem}
+.bd-nums{text-align:right;flex-shrink:0}
+.bd-val{font-family:var(--fn-mono);font-size:13px;font-weight:600;color:var(--t1);font-variant-numeric:tabular-nums;display:block}
+.bd-mult{font-family:var(--fn-mono);font-size:11px;font-weight:500;display:block;margin-top:.1rem}
+.bd-mult.hi{color:var(--ok)}
+.bd-mult.md{color:var(--warn)}
+.bd-mult.lo{color:var(--err)}
+.chart-pad{padding:.875rem}
+
+/* Improvement suggestions */
+.improve-section{margin-bottom:1px}
+.improve-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.55rem 1rem;background:var(--bg2);
+  border:1px solid var(--border);border-bottom:none;
+  flex-wrap:wrap;gap:.5rem;
+}
+@media(min-width:600px){.improve-head{padding:.55rem 1.125rem}}
+.improve-title{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4)}
+.improve-delta{font-family:var(--fn-mono);font-size:10.5px;font-weight:600;color:var(--ok)}
+.improve-body{border:1px solid var(--border)}
+
+.improve-row{
+  display:flex;
+  align-items:flex-start;
+  gap:.75rem;
+  padding:.875rem 1rem;
+  border-bottom:1px solid var(--border);
+  opacity:0;transform:translateY(5px);
+  transition:opacity .35s,transform .35s;
+}
+.improve-row:last-child{border-bottom:none}
+.improve-row.in{opacity:1;transform:translateY(0)}
+.improve-row.no-change{opacity:.55}
+@media(min-width:600px){.improve-row{padding:.875rem 1.125rem;gap:.875rem}}
+.ir-ind{width:2px;height:36px;flex-shrink:0;margin-top:2px}
+.ir-info{flex:1;min-width:0}
+.ir-ind-name{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.2rem}
+.ir-swap{font-family:var(--fn-cond);font-size:14px;font-weight:700;color:var(--t1);line-height:1.3;flex-wrap:wrap}
+.ir-swap .kept{color:var(--t3);font-weight:500}
+.ir-swap .arrow{color:var(--t4);font-weight:400;margin:0 .3rem}
+.ir-swap .better{color:var(--ok)}
+.ir-reason{font-size:11.5px;color:var(--t3);line-height:1.5;margin-top:.25rem;font-weight:300}
+.ir-nums{text-align:right;flex-shrink:0;min-width:80px}
+.ir-gain{font-family:var(--fn-mono);font-size:12px;font-weight:600;display:block;font-variant-numeric:tabular-nums}
+.ir-gain.pos{color:var(--ok)}
+.ir-gain.zero{color:var(--t4)}
+.ir-gain-label{font-size:10px;color:var(--t4);margin-top:.1rem;font-family:var(--fn-mono)}
+
+/* Stories */
+.stories-label{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);padding:.625rem 0;border-bottom:1px solid var(--border);margin-bottom:1px}
+.stories-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--border);margin-bottom:1px}
+@media(min-width:540px){.stories-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}}
+.story-card{background:var(--surface);opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.story-card.in{opacity:1;transform:translateY(0)}
+.story-head{display:flex;align-items:center;gap:.625rem;padding:.7rem 1rem;border-bottom:1px solid var(--border);background:var(--bg2)}
+.story-bar{width:2px;height:20px;flex-shrink:0}
+.story-name{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1);flex:1;min-width:0}
+.story-tk{font-family:var(--fn-mono);font-size:9.5px;color:var(--t4);letter-spacing:.08em;white-space:nowrap}
+.story-mult{font-family:var(--fn-mono);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.story-body{padding:.875rem 1rem;font-size:12.5px;color:var(--t3);line-height:1.7;font-weight:300}
+.story-body strong{color:var(--t2);font-weight:600}
+.verdict{display:inline-block;font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.2em .75em;margin-top:.625rem;border:1px solid}
+.verdict.win{color:var(--ok);border-color:var(--ok);background:var(--okbg)}
+.verdict.loss{color:var(--err);border-color:var(--err);background:var(--errbg)}
+.verdict.mid{color:var(--warn);border-color:var(--warn);background:var(--warnbg)}
+
+/* Bottom: leaderboard + analysis
+   KEY FIX: always stacks on mobile, side-by-side only on wider screens */
+.b-cols{
+  display:grid;
+  grid-template-columns:1fr;   /* mobile: single column */
+  gap:1px;
+  background:var(--border);
+  margin-bottom:1px;
+}
+@media(min-width:720px){
+  .b-cols{grid-template-columns:220px 1fr}  /* desktop: fixed lb width */
+}
+
+/* Leaderboard */
+.lb-wrap{background:var(--surface)}
+.lb-row{
+  display:flex;align-items:center;gap:.875rem;
+  padding:.7rem 1rem;
+  border-bottom:1px solid var(--border);
+  transition:background .12s;
+}
+.lb-row:hover{background:var(--bg2)}
+.lb-row.top{background:#EBF2FF}
+.lb-rank{font-family:var(--fn-mono);font-size:12px;font-weight:600;color:var(--t4);width:22px;text-align:center;flex-shrink:0}
+.lb-row.top .lb-rank{color:var(--blue);font-size:15px}
+.lb-val{flex:1;font-family:var(--fn-mono);font-size:13px;font-weight:600;color:var(--t1);font-variant-numeric:tabular-nums}
+.lb-row.top .lb-val{font-size:16px}
+.lb-yr{font-family:var(--fn-mono);font-size:10px;color:var(--t4)}
+.lb-empty{padding:1.25rem 1rem;font-family:var(--fn-mono);font-size:11px;color:var(--t4);line-height:1.6}
+.lb-clear{width:100%;padding:.5rem;background:none;border:none;border-top:1px solid var(--border);color:var(--t4);font-size:10.5px;cursor:pointer;font-family:var(--fn-mono);transition:color .15s;letter-spacing:.06em}
+.lb-clear:hover{color:var(--err)}
+
+/* Analysis */
+.analysis-wrap{background:var(--surface);padding:1.125rem 1rem}
+@media(min-width:600px){.analysis-wrap{padding:1.25rem 1.375rem}}
+.an-title{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1);line-height:1.4;margin-bottom:.875rem;letter-spacing:-.01em}
+.an-body{font-size:12.5px;color:var(--t3);line-height:1.75;margin-bottom:.625rem;font-weight:300}
+.an-body strong{color:var(--t2);font-weight:600}
+.kt-head{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);display:block;margin:1rem 0 .5rem;padding-top:1rem;border-top:1px solid var(--border)}
+.kt-item{font-size:12px;color:var(--t3);line-height:1.7;padding:.45rem 0;border-bottom:1px solid var(--border);font-weight:300}
+.kt-item:last-child{border-bottom:none}
+.kt-item strong{color:var(--t2);font-weight:600}
+.r-footer{display:flex;gap:.875rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--border);margin-top:1px;align-items:center}
+
+/* ── TAKEAWAYS ── */
+#s6{justify-content:center;overflow-y:auto}
+.tk-wrap{max-width:740px;width:100%}
+.tk-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin:1.5rem 0;
+}
+@media(min-width:480px){.tk-grid{grid-template-columns:1fr 1fr}}
+.tk-card{background:var(--surface);padding:1.125rem;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+@media(min-width:600px){.tk-card{padding:1.25rem 1.375rem}}
+.tk-card.in{opacity:1;transform:translateY(0)}
+.tk-num{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.14em;color:var(--blue);margin-bottom:.5rem;display:block}
+.tk-title{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.01em;margin-bottom:.5rem}
+.tk-body{font-size:12.5px;color:var(--t3);line-height:1.7;font-weight:300}
+.tk-body strong{color:var(--t2);font-weight:600}
+.tk-footer{padding:1.5rem 0;border-top:1px solid var(--border)}
+.tk-footer-title{font-family:var(--fn-cond);font-size:clamp(1.2rem,3vw,1.75rem);font-weight:700;color:var(--t1);letter-spacing:-.015em;margin-bottom:.75rem}
+.tk-footer-body{font-size:13px;color:var(--t3);line-height:1.75;margin-bottom:1.5rem;font-weight:300;max-width:560px}
+.tk-footer-actions{display:flex;gap:.875rem;flex-wrap:wrap;align-items:center}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2)}
+</style>
+</head>
+<body>
+
+<div class="prule" id="prule" style="width:0%"></div>
+<div class="flash-el" id="flashEl"></div>
+
+<!-- S1 -->
+<div class="screen active" id="s1">
+  <div class="hero-wrap">
+    <span class="eyebrow">Finance 101 · Investment Simulator</span>
+    <h1 class="d1">Time Travel<br>Portfolio</h1>
+    <p class="body-lg">$10,000 and a time machine. Travel back to your birth year and build a five-stock portfolio. The obvious choice rarely wins.</p>
+    <div class="hero-meta">
+      <div class="hero-stat">Sectors<strong>5 Industries</strong></div>
+      <div class="hero-stat">Universe<strong>15 Companies</strong></div>
+      <div class="hero-stat">Horizon<strong>17–26 Yrs</strong></div>
+      <div class="hero-stat">Valued<strong>30 Mar 2026</strong></div>
+    </div>
+    <div id="heroActions" style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem">
+      <button class="btn btn-primary btn-lg" onclick="showYearSelect()">
+        Begin
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div id="yearSection" style="display:none;margin-top:1.75rem">
+      <div style="font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);margin-bottom:.75rem">
+        Your birth year — your parents invest on your behalf
+      </div>
+      <div class="year-grid" id="yearGrid"></div>
+      <div class="era-note" id="eraBadge"></div>
+      <div style="display:flex;align-items:center;gap:1.25rem;margin-top:1.25rem;flex-wrap:wrap">
+        <button class="btn btn-primary btn-lg" id="startBtn" onclick="startGame()" disabled>
+          Start Investing
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
+        </button>
+        <button class="nav-back" onclick="resetHero()">Return</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S2 INDUSTRY (JS) -->
+<div id="indCont"></div>
+
+<!-- S3 ALLOCATE -->
+<div class="screen" id="s3">
+  <div class="alloc-wrap">
+    <div style="margin-bottom:1.5rem">
+      <span class="eyebrow">Allocation</span>
+      <h2 class="d2">Distribute Capital</h2>
+      <p style="font-size:13px;color:var(--t3);font-weight:300">Spread $10,000 across your five picks. Minimum $500 per position.</p>
+    </div>
+    <div class="budget-strip">
+      <div>
+        <div class="bs-label">Total Allocated</div>
+        <div class="bs-val">$<span id="bsTotal">0</span></div>
+      </div>
+      <div class="bs-rem" id="bsRem">$10,000 remaining</div>
+    </div>
+    <div class="bbar-wrap"><div class="bbar" id="bbar" style="width:0%"></div></div>
+    <div class="alloc-table" id="allocTable"></div>
+    <div style="margin-top:1.25rem">
+      <div style="font-family:var(--fn-mono);font-size:11px;color:var(--err);min-height:1.4em;margin-bottom:.625rem" id="allocErr"></div>
+      <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
+        <button class="btn btn-primary btn-lg" id="allocGo" onclick="goTimeline()" disabled>
+          Time Travel
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
+        </button>
+        <button class="nav-back" id="allocBack">Return</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S4 TIMELINE -->
+<div class="screen" id="s4">
+  <div class="tl-grid-bg"></div>
+  <div class="tl-scan"></div>
+  <div class="tl-content">
+    <div class="tl-status" id="tlStatus">Standby</div>
+    <div class="tl-year" id="tlYear">—</div>
+    <div class="tl-era" id="tlEra"></div>
+    <div class="tl-ms" id="tlMs"></div>
+    <div class="tl-track-wrap">
+      <div class="tl-track"><div class="tl-fill" id="tlFill" style="width:0%"></div></div>
+      <div class="tl-track-labels"><span id="tlFrom">—</span><span>30 MAR 2026</span></div>
+    </div>
+    <div class="tl-cta" id="tlCta">
+      <div class="tl-cta-note">Portfolio valued — 30 March 2026</div>
+      <button class="btn btn-lg" id="tlViewBtn"
+        style="background:#fff;color:var(--navy);border-color:#fff;margin-top:.5rem">
+        View Portfolio Performance
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- S5 RESULTS -->
+<div class="screen" id="s5">
+  <div class="rpage" id="rpage"></div>
+</div>
+
+<!-- S6 TAKEAWAYS -->
+<div class="screen" id="s6">
+  <div class="tk-wrap">
+    <span class="eyebrow">Finance 101 · Key Takeaways</span>
+    <h2 class="d2">What the Markets<br>Taught Us</h2>
+    <p class="body-lg" id="tkSub"></p>
+    <div class="tk-grid" id="tkGrid"></div>
+    <div class="tk-footer">
+      <div class="tk-footer-title">Thank you for participating.</div>
+      <p class="tk-footer-body" id="tkFooter"></p>
+      <div class="tk-footer-actions">
+        <button class="btn btn-primary btn-lg" onclick="resetAll()">
+          Play Again
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
+        </button>
+        <button class="nav-back" onclick="goTo(5)">Results</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════
+   DATA
+══════════════════════════════ */
+const IND=[
+  {id:'mining',name:'Mining & Resources',color:'#B45309',
+   note:'ASX · AUD total return incl. franked dividends',
+   stocks:[
+    {name:'BHP',ticker:'BHP.AX',
+     desc:'World\'s largest diversified miner. Iron ore, copper and potash across six continents. One of the ASX\'s biggest dividend payers.',
+     verdict:'mid',
+     data:{2000:9.5,2001:11,2002:11.5,2003:9,2004:7,2005:5,2006:3.5,2007:2.8,2008:3.5},
+     story:'Iron ore, copper and potash across six continents. Massive franked dividends anchor every Australian super fund. Reliable, cyclical, and utterly unglamorous — the bedrock of "set and forget" Australian portfolios.'},
+    {name:'Rio Tinto',ticker:'RIO.AX',
+     desc:'Global iron ore, aluminium and copper giant. Some of the world\'s lowest-cost mining assets in Western Australia\'s Pilbara.',
+     verdict:'mid',
+     data:{2000:10,2001:12,2002:13,2003:9,2004:6,2005:4,2006:3.5,2007:2.5,2008:3},
+     story:'Pilbara iron ore operations are among the lowest-cost on earth. Strong franked dividends but heavily exposed to China\'s industrial cycle — the 2011–2015 commodity slump tested patience for years.'},
+    {name:'Fortescue',ticker:'FMG.AX',
+     desc:'Australian iron ore producer built against expert consensus by Andrew Forrest. Listed on the ASX in August 2003.',
+     verdict:'win',
+     data:{2000:null,2001:null,2002:null,2003:null,2004:120,2005:90,2006:45,2007:18,2008:6},
+     story:'Every expert said Pilbara iron ore was sewn up by BHP and Rio. Andrew Forrest built a $25B empire anyway. $1,000 invested in 2005 became roughly $90,000. The contrarian bet nobody took seriously.'},
+  ]},
+  {id:'retail',name:'Retail & E-Commerce',color:'#0F766E',
+   note:'AUD · ASX stocks native; Amazon converted at AUD/USD rates',
+   stocks:[
+    {name:'Woolworths',ticker:'WOW.AX',
+     desc:'Australia\'s largest supermarket chain with over 1,000 stores. Half of the country\'s dominant grocery duopoly.',
+     verdict:'mid',
+     data:{2000:8,2001:7.5,2002:7,2003:5,2004:3.5,2005:2.5,2006:2,2007:1.5,2008:1.1},
+     story:'Half of Australia\'s supermarket duopoly. Reliable franked dividends through COVID and cost-of-living crises. But facing Aldi, Costco, and Amazon Fresh — the moat is narrowing.'},
+    {name:'Amazon',ticker:'AMZN',
+     desc:'American e-commerce and cloud giant. Started as an online bookstore. Now runs AWS cloud, Prime Video, Alexa and global logistics.',
+     verdict:'win',
+     data:{2000:32,2001:28,2002:25,2003:20,2004:17,2005:15,2006:12,2007:8,2008:6},
+     story:'Survived the dot-com crash at $0.80/share (split-adjusted), then built AWS, Prime, and Alexa while the market slept. Returns shown in AUD — currency effects vary but the stock\'s rise dwarfed them all.'},
+    {name:'JB Hi-Fi',ticker:'JBH.AX',
+     desc:'Australian consumer electronics retailer. Listed October 2003. Analysts predicted Amazon would destroy it — they were wrong.',
+     verdict:'win',
+     data:{2000:null,2001:null,2002:null,2003:null,2004:38,2005:30,2006:22,2007:12,2008:8},
+     story:'Every year analysts predicted Amazon would destroy JB Hi-Fi. Instead it adapted, acquired The Good Guys, and kept prices sharp. From $3 in 2005 to $90 today — the retailer that refused to die.'},
+  ]},
+  {id:'health',name:'Healthcare',color:'#6D28D9',
+   note:'ASX · AUD total return including dividends',
+   stocks:[
+    {name:'Cochlear',ticker:'COH.AX',
+     desc:'Australian company that invented the bionic ear implant. Dominant global market share. Each new device generation drives upgrade demand.',
+     verdict:'win',
+     data:{2000:38,2001:32,2002:28,2003:22,2004:14,2005:7,2006:6,2007:5.5,2008:5},
+     story:'Cochlear invented the bionic ear and has never stopped improving it. Each device generation prompts recipients to upgrade. A premium, globally dominant monopoly moat.'},
+    {name:'CSL',ticker:'CSL.AX',
+     desc:'Global biotech company, originally a government vaccine lab privatised in 1994. World leader in blood plasma products and flu vaccines.',
+     verdict:'win',
+     data:{2000:75,2001:65,2002:58,2003:48,2004:28,2005:13,2006:11,2007:9,2008:8},
+     story:'Transformed from a government vaccine lab into a $130B global biotech. From $4 in 2001 to $280 today — one of the greatest wealth creation stories in ASX history.'},
+    {name:'Ramsay Health Care',ticker:'RHC.AX',
+     desc:'Australia\'s largest private hospital operator, expanded to 18 countries across Asia, Europe and Australia.',
+     verdict:'mid',
+     data:{2000:18,2001:15,2002:13,2003:11,2004:8,2005:5,2006:4,2007:3,2008:2.5},
+     story:'Ageing populations need more hospitals. Ramsay grew from Queensland to 18 countries, becoming the world\'s 3rd-largest private hospital group. Demographics as a business model.'},
+  ]},
+  {id:'bank',name:'Banking',color:'#1D4ED8',
+   note:'ASX · AUD total return incl. fully franked dividends',
+   stocks:[
+    {name:'Commonwealth Bank',ticker:'CBA.AX',
+     desc:'Australia\'s largest bank by market cap. Near-monopoly on everyday banking. Consistently highest-returning of the Big Four.',
+     verdict:'mid',
+     data:{2000:16,2001:15,2002:14,2003:12,2004:9,2005:6,2006:5,2007:4,2008:3},
+     story:'Near-monopoly on everyday banking. Highest return of the Big Four — mostly thanks to franking credits and consistent dividends. Everyone complains about the fees; the shareholders don\'t.'},
+    {name:'ANZ',ticker:'ANZ.AX',
+     desc:'One of Australia\'s Big Four banks. Pursued an ambitious pan-Asian expansion strategy from 2010, quietly abandoned by 2017.',
+     verdict:'loss',
+     data:{2000:6,2001:5.5,2002:5,2003:4.5,2004:3.5,2005:2.5,2006:2.2,2007:2,2008:1.8},
+     story:'In 2010 ANZ\'s Asian expansion looked visionary. By 2017 they were retreating. Weakest price performer of the Big Four — compensated by franked dividends, but lagging CBA by a wide margin.'},
+    {name:'Macquarie Group',ticker:'MQG.AX',
+     desc:'"The Millionaires\' Factory." Transformed from an investment bank into the world\'s largest infrastructure asset manager.',
+     verdict:'win',
+     data:{2000:22,2001:20,2002:18,2003:15,2004:12,2005:8,2006:6,2007:2.5,2008:3},
+     story:'Reinvented from investment bank into the world\'s largest infrastructure asset manager. From $15 in 2001 to $230 today. 2007 buyers watched 82% disappear in the GFC before the long recovery.'},
+  ]},
+  {id:'tech',name:'Technology',color:'#0E7490',
+   note:'AUD · USD returns converted at prevailing AUD/USD rates',
+   stocks:[
+    {name:'Microsoft',ticker:'MSFT',
+     desc:'American software and cloud giant. Reinvented under Satya Nadella with Azure cloud from 2014. Central to enterprise AI via OpenAI.',
+     verdict:'win',
+     data:{2000:12,2001:14,2002:16,2003:18,2004:19,2005:20,2006:18,2007:16,2008:17},
+     story:'Written off as a dinosaur at $30 in the iPhone era. Satya Nadella bet the company on Azure cloud in 2014. 2000 buyers paid dot-com peak prices — lower return than 2003–2005 buyers despite longer hold.'},
+    {name:'Apple',ticker:'AAPL',
+     desc:'American tech company. Near-bankrupt in 1997. Transformed by iPod, iPhone, App Store, iPad, AirPods and a growing services empire.',
+     verdict:'win',
+     data:{2000:95,2001:88,2002:80,2003:70,2004:55,2005:43,2006:35,2007:22,2008:17},
+     story:'In 2000: 3% PC market share and near-bankrupt. Then iPod, iPhone, App Store, iPad, AirPods, Apple Watch. AUD/USD tailwind adds to returns for post-2004 buyers as AUD is weaker today than at entry.'},
+    {name:'Nvidia',ticker:'NVDA',
+     desc:'American semiconductor company. Started with gaming GPUs. Became the essential hardware platform for the global AI revolution.',
+     verdict:'win',
+     data:{2000:105,2001:130,2002:145,2003:135,2004:115,2005:95,2006:75,2007:40,2008:28},
+     story:'Founded for gaming GPUs, Jensen Huang bet everything on CUDA in 2006. 2001–2002 buyers caught post-dot-com lows — higher AUD return than 2000 buyers despite shorter hold.'},
+  ]},
+];
+
+const ERA_LABELS={
+  2000:'DOT-COM PEAK',2001:'DOT-COM BUST',2002:'BEAR MARKET',
+  2003:'RECOVERY',2004:'RECOVERY',2005:'BULL RUN',
+  2006:'BULL RUN',2007:'PRE-GFC PEAK',2008:'GFC CRASH',
+  2009:'GFC TROUGH',2010:'POST-GFC RECOVERY',2011:'EUROZONE CRISIS',
+  2012:'QE RECOVERY',2013:'BULL MARKET',2014:'QUIET GROWTH',
+  2015:'COMMODITY CRASH',2016:'TRUMP RALLY',2017:'BULL MARKET',
+  2018:'TRADE WARS',2019:'RECORD HIGHS',2020:'COVID CRASH',
+  2021:'MEME STOCK MANIA',2022:'RATE HIKE SHOCK',
+  2023:'AI REVOLUTION',2024:'AI FRENZY',2025:'AI ERA',2026:'PRESENT'
+};
+const MILESTONES={
+  2000:'Dot-com bubble at peak — tech valuations defy gravity',
+  2001:'Dot-com crash · 9/11 shock · markets in freefall',
+  2002:'Corporate scandals: Enron, WorldCom collapse',
+  2003:'Iraq War · SARS outbreak · markets begin recovery',
+  2004:'Facebook founded · ASX hits record highs',
+  2005:'Hurricane Katrina · oil breaks $70/barrel',
+  2006:'Twitter launched · US housing bubble inflating',
+  2007:'iPhone launches · subprime cracks appear',
+  2008:'Lehman Brothers collapses — Global Financial Crisis',
+  2009:'Markets bottom · Bitcoin whitepaper published',
+  2010:'iPad launches · European sovereign debt crisis',
+  2011:'Eurozone crisis peaks · global uncertainty',
+  2012:'Fed launches QE3 · Facebook IPO',
+  2013:'ASX surges · Tesla takes off',
+  2014:'Satya Nadella takes Microsoft helm',
+  2015:'China slowdown · iron ore collapses · oil at $30',
+  2016:'Trump elected · Brexit vote shocks markets',
+  2017:'Bitcoin mania · ASX bull run',
+  2018:'US-China trade war · rates rising',
+  2019:'ASX all-time highs · late-cycle expansion',
+  2020:'COVID-19 — markets fall 35%, then rocket',
+  2021:'Meme stocks · crypto mania · supply chains break',
+  2022:'Inflation surge · RBA rate hikes · tech selloff',
+  2023:'ChatGPT launches the AI revolution',
+  2024:'Nvidia reaches $3 trillion market cap',
+  2025:'AI reshapes every industry and market',
+  2026:'Portfolio valued — 30 March 2026',
+};
+
+function horizonNote(y){
+  const span=2026-y;
+  const fx={
+    2000:'AUD/USD ~0.55 — slight headwind for USD stocks; returns AUD-adjusted.',
+    2001:'AUD/USD ~0.52 — slight headwind for USD stocks; returns AUD-adjusted.',
+    2002:'AUD/USD ~0.54 — returns AUD-adjusted.',
+    2003:'AUD/USD ~0.65 vs 0.63 today — near-neutral currency effect.',
+    2004:'AUD/USD ~0.74 vs 0.63 today — ~17% currency tailwind on USD returns.',
+    2005:'AUD/USD ~0.77 vs 0.63 today — ~22% currency tailwind on USD returns.',
+    2006:'AUD/USD ~0.76 vs 0.63 today — ~21% currency tailwind on USD returns.',
+    2007:'AUD/USD ~0.88 vs 0.63 today — ~40% currency tailwind amplifies USD returns.',
+    2008:'AUD/USD ~0.85 vs 0.63 today — ~35% currency tailwind amplifies USD returns.',
+  }[y]||'';
+  return `<strong>Investing in ${y}</strong> — ${span} years of compounding to 30 March 2026. ${fx}`;
+}
+
+/* ══════════════════════════════
+   STATE
+══════════════════════════════ */
+const TOTAL=10000,STEP=500,MINV=500;
+let S={year:null,picks:{},alloc:{}};
+let chartInst=null,results=null;
+const LB_KEY='ttp_lb_v2';
+const NAV_ORDER=[1,'i0','i1','i2','i3','i4',3,4,5,6];
+
+/* ══════════════════════════════
+   NAV
+══════════════════════════════ */
+function goTo(id){
+  const cur=document.querySelector('.screen.active');
+  if(cur){cur.classList.add('exit-up');setTimeout(()=>cur.classList.remove('active','exit-up'),460);}
+  setTimeout(()=>{
+    let el;
+    if(typeof id==='string'&&id[0]==='i') el=document.getElementById('si'+id.slice(1));
+    else el=document.getElementById('s'+id);
+    if(el) el.classList.add('active');
+    const idx=NAV_ORDER.indexOf(id);
+    if(idx>=0) document.getElementById('prule').style.width=Math.max(((idx+1)/NAV_ORDER.length)*100,3)+'%';
+  },220);
+}
+
+/* ══════════════════════════════
+   S1
+══════════════════════════════ */
+function showYearSelect(){
+  document.getElementById('heroActions').style.display='none';
+  document.getElementById('yearSection').style.display='block';
+  buildYearGrid();
+}
+function resetHero(){
+  S.year=null;
+  document.getElementById('heroActions').style.display='flex';
+  document.getElementById('yearSection').style.display='none';
+  document.getElementById('eraBadge').classList.remove('vis');
+  document.getElementById('startBtn').disabled=true;
+  buildYearGrid();
+}
+function buildYearGrid(){
+  const g=document.getElementById('yearGrid');g.innerHTML='';
+  for(let y=2000;y<=2008;y++){
+    const b=document.createElement('button');
+    b.className='yb'+(S.year===y?' on':'');
+    b.textContent=y;
+    b.addEventListener('click',()=>pickYear(y));
+    g.appendChild(b);
+  }
+}
+function pickYear(y){
+  S.year=y;
+  document.querySelectorAll('.yb').forEach(b=>b.classList.toggle('on',+b.textContent===y));
+  const badge=document.getElementById('eraBadge');
+  badge.innerHTML=horizonNote(y);badge.classList.add('vis');
+  document.getElementById('startBtn').disabled=false;
+}
+function startGame(){if(!S.year)return;buildIndScreens();goTo('i0');}
+
+/* ══════════════════════════════
+   S2
+══════════════════════════════ */
+function buildIndScreens(){
+  const wrap=document.getElementById('indCont');wrap.innerHTML='';
+  IND.forEach((ind,idx)=>{
+    const el=document.createElement('div');
+    el.className='screen ind-screen';el.id='si'+idx;
+    let track='<div class="step-track">';
+    IND.forEach((_,di)=>{
+      if(di>0)track+=`<div class="st-edge ${di<=idx?'done':''}"></div>`;
+      track+=`<div class="st-node ${di<idx?'done':di===idx?'active':''}"></div>`;
+    });
+    track+='</div>';
+    const yr=S.year;
+    let cards='';
+    ind.stocks.forEach(st=>{
+      const mult=st.data[yr];
+      const isNA=(mult===null||mult===undefined);
+      const isOn=S.picks[ind.id]?.name===st.name;
+      const safeId='sc_'+idx+'_'+st.name.replace(/[^a-zA-Z0-9]/g,'_');
+      cards+=`<div class="sc-card${isOn?' sc-on':''}${isNA?' sc-na':''}" id="${safeId}"
+        onclick="${isNA?'':
+          `pickStock(${idx},'${st.name.replace(/'/g,"\\'")}',this)`}">
+        <div class="sc-ticker">${st.ticker}</div>
+        <div class="sc-name">${st.name}</div>
+        <div class="sc-desc">${st.desc}</div>
+        <div class="sc-bottom">
+          ${isNA
+            ?'<span class="sc-na-label">Not listed</span>'
+            :`<span class="sc-sel-label">Selected</span>
+              <div class="sc-check-wrap">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5l2.5 2.5 3.5-4" stroke="#fff" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>`}
+        </div>
+      </div>`;
+    });
+    const isLast=idx===IND.length-1;
+    el.innerHTML=`<div class="ind-wrap">
+      <div class="ind-topbar">
+        <span class="ind-meta">Finance 101 · Born ${yr}</span>${track}
+      </div>
+      <div class="ind-title-row">
+        <span class="ind-kicker">Industry ${idx+1} of ${IND.length}</span>
+        <div class="ind-title">
+          <div class="ind-color-mark" style="background:${ind.color}"></div>${ind.name}
+        </div>
+        <div class="ind-note">${ind.note}</div>
+      </div>
+      <div class="stock-cards" id="scg_${idx}">${cards}</div>
+      <div class="ind-footer">
+        <div style="display:flex;align-items:center;gap:1.25rem">
+          <button class="nav-back" onclick="indBack(${idx})">Return</button>
+          <span class="ind-prompt${S.picks[ind.id]?' chosen':''}" id="ipr_${idx}">
+            ${S.picks[ind.id]?'Company selected — continue when ready':'Select one company to continue'}
+          </span>
+        </div>
+        <button class="btn btn-primary btn-lg" id="icont_${idx}"
+          onclick="${isLast?'goAlloc()':'nextInd('+(idx+1)+')'}"
+          ${S.picks[ind.id]?'':'disabled'}>
+          ${isLast?'Continue to Allocation':'Next Industry'}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M5 3l14 9L5 21V3z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function pickStock(indIdx,stockName,cardEl){
+  const ind=IND[indIdx];
+  const prev=S.picks[ind.id];
+  if(prev&&prev.name!==stockName)delete S.alloc[prev.name];
+  const st=ind.stocks.find(s=>s.name===stockName);
+  S.picks[ind.id]=st;
+  if(!S.alloc[stockName])S.alloc[stockName]=2000;
+  document.querySelectorAll('#scg_'+indIdx+' .sc-card').forEach(c=>c.classList.remove('sc-on'));
+  cardEl.classList.add('sc-on');
+  const btn=document.getElementById('icont_'+indIdx);if(btn)btn.disabled=false;
+  const pr=document.getElementById('ipr_'+indIdx);
+  if(pr){pr.textContent='Company selected — continue when ready';pr.classList.add('chosen');}
+}
+function nextInd(idx){buildIndScreens();goTo('i'+idx);}
+function indBack(idx){if(idx===0){resetHero();goTo(1);}else{buildIndScreens();goTo('i'+(idx-1));}}
+function goAlloc(){
+  const picks=Object.values(S.picks);
+  const per=Math.floor(TOTAL/picks.length/STEP)*STEP;
+  picks.forEach(st=>{if(!S.alloc[st.name])S.alloc[st.name]=per;});
+  const diff=TOTAL-sumAlloc();
+  if(diff!==0)S.alloc[picks[0].name]=(S.alloc[picks[0].name]||0)+diff;
+  document.getElementById('allocBack').onclick=()=>{buildIndScreens();goTo('i'+(IND.length-1));};
+  buildAllocTable();goTo(3);
+}
+
+/* ══════════════════════════════
+   S3
+══════════════════════════════ */
+function buildAllocTable(){
+  const c=document.getElementById('allocTable');c.innerHTML='';
+  IND.forEach(ind=>{
+    const st=S.picks[ind.id];if(!st)return;
+    const amt=S.alloc[st.name]||0,tot=sumAlloc();
+    const row=document.createElement('div');row.className='alloc-row';
+    const dec=document.createElement('button');dec.className='ar-btn';dec.textContent='−';dec.disabled=amt<=MINV;
+    const inc=document.createElement('button');inc.className='ar-btn';inc.textContent='+';inc.disabled=tot+STEP>TOTAL;
+    const amtEl=document.createElement('div');amtEl.className='ar-amt';
+    amtEl.innerHTML=`$${(amt/1000).toFixed(1)}k<small>${((amt/TOTAL)*100).toFixed(0)}%</small>`;
+    const ctrl=document.createElement('div');ctrl.className='ar-ctrl';ctrl.append(dec,amtEl,inc);
+    row.innerHTML=`<div class="ar-bar" style="background:${ind.color}"></div>
+      <div class="ar-info"><div class="ar-name">${st.name}</div><div class="ar-ticker">${st.ticker}</div></div>`;
+    row.appendChild(ctrl);
+    dec.addEventListener('click',()=>nudge(st.name,-1));
+    inc.addEventListener('click',()=>nudge(st.name,1));
+    c.appendChild(row);
+  });
+  refreshBudget();
+}
+function nudge(name,dir){
+  const cur=S.alloc[name]||0,nv=cur+dir*STEP,nt=sumAlloc()-cur+nv;
+  if(nv<MINV||nt>TOTAL)return;
+  S.alloc[name]=nv;buildAllocTable();
+}
+function sumAlloc(){return Object.values(S.alloc).reduce((a,b)=>a+b,0);}
+function refreshBudget(){
+  const tot=sumAlloc(),rem=TOTAL-tot,pct=Math.min(tot/TOTAL*100,100);
+  document.getElementById('bsTotal').textContent=tot.toLocaleString();
+  const bar=document.getElementById('bbar');
+  bar.style.width=pct+'%';
+  bar.className='bbar'+(rem===0?' done':tot>TOTAL?' over':'');
+  const remEl=document.getElementById('bsRem');
+  if(rem===0){remEl.textContent='✓ Fully allocated';remEl.className='bs-rem ok';}
+  else if(rem>0){remEl.textContent='$'+rem.toLocaleString()+' remaining';remEl.className='bs-rem warn';}
+  else{remEl.textContent='$'+Math.abs(rem).toLocaleString()+' over';remEl.className='bs-rem err';}
+  const ok=rem===0;
+  document.getElementById('allocGo').disabled=!ok;
+  document.getElementById('allocErr').textContent=ok?'':`Allocate exactly $${TOTAL.toLocaleString()} to continue`;
+}
+
+/* ══════════════════════════════
+   S4
+══════════════════════════════ */
+function goTimeline(){
+  if(sumAlloc()!==TOTAL)return;
+  document.getElementById('tlFrom').textContent=S.year;
+  document.getElementById('tlYear').textContent=S.year;
+  document.getElementById('tlFill').style.width='0%';
+  document.getElementById('tlCta').classList.remove('vis');
+  document.getElementById('tlViewBtn').onclick=function(){showResults();};
+  goTo(4);setTimeout(runTimeline,500);
+}
+function runTimeline(){
+  const start=S.year,end=2026,total=end-start;let cur=start;
+  const yrEl=document.getElementById('tlYear'),stEl=document.getElementById('tlStatus'),
+        eraEl=document.getElementById('tlEra'),msEl=document.getElementById('tlMs'),
+        fillEl=document.getElementById('tlFill');
+  yrEl.textContent=start;stEl.textContent='Departing from';
+  eraEl.textContent=ERA_LABELS[start]||'';msEl.textContent=MILESTONES[start]||'';
+  function tick(){
+    yrEl.style.opacity='0';
+    setTimeout(()=>{
+      cur++;const p=(cur-start)/total;
+      fillEl.style.width=(p*100)+'%';
+      if(cur<end){
+        yrEl.textContent=cur;stEl.textContent='Travelling';
+        eraEl.textContent=ERA_LABELS[cur]||'';msEl.textContent=MILESTONES[cur]||'';
+      }else{
+        yrEl.textContent='2026';stEl.textContent='Arrived';
+        eraEl.textContent='PRESENT DAY';msEl.textContent='Portfolio valued — 30 March 2026';
+        fillEl.style.width='100%';
+      }
+      yrEl.style.opacity='1';
+      if(cur<end){
+        const delay=p<0.6?60:p<0.8?88:p<0.95?140:200;setTimeout(tick,delay);
+      }else{
+        setTimeout(()=>{
+          const fl=document.getElementById('flashEl');
+          fl.classList.add('on');setTimeout(()=>fl.classList.remove('on'),320);
+          document.getElementById('tlCta').classList.add('vis');
+        },700);
+      }
+    },42);
+  }
+  setTimeout(tick,380);
+}
+
+/* ══════════════════════════════
+   CALC
+══════════════════════════════ */
+function calcResults(){
+  let final=0;const rows=[];
+  IND.forEach(ind=>{
+    const st=S.picks[ind.id];if(!st)return;
+    const alloc=S.alloc[st.name]||0;
+    const mult=st.data[S.year];
+    const safeMult=(mult!=null)?mult:1;
+    const val=Math.round(alloc*safeMult);
+    final+=val;
+    // Alternatives: other stocks in same industry that were listed in S.year
+    const alts=ind.stocks.filter(s=>s.name!==st.name&&s.data[S.year]!=null);
+    const bestAlt=alts.length?alts.reduce((b,s)=>s.data[S.year]>b.data[S.year]?s:b,alts[0]):null;
+    const worstAlt=alts.length?alts.reduce((b,s)=>s.data[S.year]<b.data[S.year]?s:b,alts[0]):null;
+    rows.push({st,ind,alloc,mult:safeMult,val,bestAlt,worstAlt});
+  });
+  const bestPoss=rows.reduce((t,r)=>{
+    const listed=IND.find(i=>i.id===r.ind.id).stocks.filter(s=>s.data[S.year]!=null);
+    return t+Math.round(r.alloc*Math.max(...listed.map(s=>s.data[S.year])));
+  },0);
+  const worstPoss=rows.reduce((t,r)=>{
+    const listed=IND.find(i=>i.id===r.ind.id).stocks.filter(s=>s.data[S.year]!=null);
+    return t+Math.round(r.alloc*Math.min(...listed.map(s=>s.data[S.year])));
+  },0);
+  results={rows,final,year:S.year,span:2026-S.year,bestPoss,worstPoss};
+}
+
+/* ══════════════════════════════
+   S5 — RENDER
+══════════════════════════════ */
+function showResults(){
+  calcResults();
+  saveLb(results.final,S.year); // save BEFORE render
+  renderResults();
+  goTo(5);
+}
+
+function renderResults(){
+  const{rows,final,year,span,bestPoss,worstPoss}=results;
+  const pct=(((final-TOTAL)/TOTAL)*100).toFixed(1);
+  const mult=(final/TOTAL).toFixed(1);
+
+  let headline;
+  if(final>=TOTAL*15)       headline='<strong>Exceptional.</strong> ×'+mult+' over '+span+' years — you beat most professional fund managers.';
+  else if(final>=TOTAL*7)   headline='<strong>Strong.</strong> ×'+mult+' over '+span+' years — well above the long-run market average.';
+  else if(final>=TOTAL*3)   headline='<strong>Solid.</strong> ×'+mult+' over '+span+' years — above inflation, below your best possible outcome.';
+  else if(final>=TOTAL*1.5) headline='<strong>Modest.</strong> ×'+mult+' over '+span+' years — you outpaced a savings account, but not by much.';
+  else                      headline='<strong>Challenging.</strong> Your portfolio barely kept pace with inflation over '+span+' years.';
+
+  // Breakdown
+  let bdHtml='';
+  rows.forEach(({st,ind,alloc,mult,val},i)=>{
+    const mc=mult>=8?'hi':mult>=3?'md':'lo';
+    bdHtml+=`<div class="bd-row" id="bdr${i}">
+      <div class="bd-bar" style="background:${ind.color}"></div>
+      <div class="bd-info">
+        <div class="bd-name">${st.name}</div>
+        <div class="bd-sub">${ind.name} · $${alloc.toLocaleString()}</div>
+      </div>
+      <div class="bd-nums">
+        <span class="bd-val">$${val.toLocaleString()}</span>
+        <span class="bd-mult ${mc}">×${mult}</span>
+      </div>
+    </div>`;
+  });
+
+  // Swap analysis
+  let totalGain=0;
+  const suggestions=rows.map(r=>{
+    if(!r.bestAlt)return null;
+    const altMult=r.bestAlt.data[year];
+    const altVal=Math.round(r.alloc*altMult);
+    const gain=altVal-r.val;
+    if(gain>0)totalGain+=gain;
+    return{ind:r.ind,yourSt:r.st,yourVal:r.val,yourMult:r.mult,
+           bestAlt:r.bestAlt,bestAltVal:altVal,bestAltMult:altMult,gain,alloc:r.alloc};
+  }).filter(Boolean);
+
+  let improveHtml='';
+  suggestions.forEach((s,i)=>{
+    const hasGain=s.gain>0;
+    improveHtml+=`<div class="${hasGain?'improve-row':'improve-row no-change'}" id="imp${i}">
+      <div class="ir-ind" style="background:${s.ind.color}"></div>
+      <div class="ir-info">
+        <div class="ir-ind-name">${s.ind.name}</div>
+        <div class="ir-swap">
+          ${hasGain
+            ?`<span class="kept">${s.yourSt.name}</span><span class="arrow">→</span><span class="better">${s.bestAlt.name}</span>`
+            :`<span class="kept">${s.yourSt.name}</span><span style="font-size:11px;color:var(--ok);margin-left:.5rem">✓ Best pick</span>`}
+        </div>
+        <div class="ir-reason">
+          ${hasGain
+            ?`${s.bestAlt.name} returned ×${s.bestAltMult} vs your ×${s.yourMult} — $${s.bestAltVal.toLocaleString()} vs $${s.yourVal.toLocaleString()} on $${s.alloc.toLocaleString()} invested.`
+            :`${s.yourSt.name} was the strongest available pick in ${s.ind.name} for ${year}.`}
+        </div>
+      </div>
+      <div class="ir-nums">
+        ${hasGain
+          ?`<span class="ir-gain pos">+$${s.gain.toLocaleString()}</span><span class="ir-gain-label">if swapped</span>`
+          :`<span class="ir-gain zero">Optimal</span><span class="ir-gain-label">no better alt</span>`}
+      </div>
+    </div>`;
+  });
+
+  // Stories
+  let storiesHtml='';
+  rows.forEach(({st,ind,alloc,val,mult})=>{
+    const mc=mult>=20?'var(--ok)':mult>=8?'var(--blue)':mult>=3?'var(--warn)':'var(--err)';
+    storiesHtml+=`<div class="story-card">
+      <div class="story-head">
+        <div class="story-bar" style="background:${ind.color}"></div>
+        <span class="story-name">${st.name}</span>
+        <span class="story-tk">${st.ticker}</span>
+        <span class="story-mult" style="color:${mc}">×${mult}</span>
+      </div>
+      <div class="story-body">
+        <strong>$${alloc.toLocaleString()} → $${val.toLocaleString()} AUD</strong><br>${st.story}
+        <div><span class="verdict ${st.verdict}">${
+          st.verdict==='win'?'Counter-intuitive winner':
+          st.verdict==='loss'?'Value trap':'Steady compounder'
+        }</span></div>
+      </div>
+    </div>`;
+  });
+
+  // Analysis
+  const winners=rows.filter(r=>r.st.verdict==='win');
+  let comp;
+  if(winners.length>=4)      comp='You identified '+winners.length+' counter-intuitive winners — rare conviction.';
+  else if(winners.length===3) comp='Three counter-intuitive winners anchored your returns. Two conventional picks cost compounding power.';
+  else if(winners.length===2) comp=winners.map(r=>r.st.name).join(' and ')+' were your genuine surprises. Three conventional picks kept you respectable but not remarkable.';
+  else if(winners.length===1) comp='Only '+(winners[0]?.st.name||'one pick')+' broke from consensus. The other four tracked conventional wisdom.';
+  else                        comp='All five picks were consensus choices. What is expected is already priced in.';
+
+  const bestRow=rows.reduce((b,r)=>r.mult>b.mult?r:b);
+  const bestLine='Standout: <strong>'+bestRow.st.name+' ×'+bestRow.mult+'</strong> — $'+bestRow.alloc.toLocaleString()+' became $'+bestRow.val.toLocaleString()+'.';
+
+  const tks=[];
+  const fxMap={
+    2000:'AUD/USD 0.55 in 2000 — slight headwind for USD assets; returns AUD-adjusted.',
+    2001:'AUD/USD 0.52 in 2001 — slight headwind for USD assets; returns AUD-adjusted.',
+    2002:'AUD/USD 0.54 in 2002 — returns AUD-adjusted.',
+    2003:'AUD/USD 0.65 in 2003 vs 0.63 today — near-neutral currency effect.',
+    2004:'AUD/USD 0.74 in 2004 vs 0.63 today — ~17% currency tailwind on USD returns.',
+    2005:'AUD/USD 0.77 in 2005 vs 0.63 today — ~22% currency tailwind on USD returns.',
+    2006:'AUD/USD 0.76 in 2006 vs 0.63 today — ~21% currency tailwind on USD returns.',
+    2007:'AUD/USD 0.88 in 2007 vs 0.63 today — ~40% currency tailwind amplifies all USD returns.',
+    2008:'AUD/USD 0.85 in 2008 vs 0.63 today — ~35% currency tailwind amplifies all USD returns.',
+  };
+  if(rows.some(r=>r.ind.id==='tech')) tks.push('<strong>Currency ('+year+'):</strong> '+fxMap[year]);
+  const mp=rows.find(r=>r.ind.id==='mining');
+  if(mp?.st.ticker==='FMG.AX') tks.push('<strong>Fortescue:</strong> Contrarian conviction against expert consensus. Every analyst said Pilbara was locked up. They were wrong.');
+  else if(mp) tks.push('<strong>Mining:</strong> BHP and Rio are reliable franked-dividend compounders — rarely counter-intuitive, but rarely disappointing over a full cycle.');
+  if(rows.some(r=>r.st.ticker==='ANZ.AX')) tks.push('<strong>ANZ:</strong> Vision without execution is expensive. Asian expansion looked bold in 2010, was abandoned by 2017.');
+  if(rows.some(r=>r.st.ticker==='CSL.AX'||r.st.ticker==='COH.AX')) tks.push('<strong>Australian healthcare:</strong> CSL and Cochlear built global monopolies from niche specialisations. Ageing demographics remain their tailwind.');
+  tks.push('<strong>Best possible ('+year+'):</strong> $'+bestPoss.toLocaleString()+' — you captured <strong>'+((final/bestPoss)*100).toFixed(0)+'%</strong> of maximum return.');
+  tks.push('<strong>Worst possible ('+year+'):</strong> $'+worstPoss.toLocaleString()+' — your result '+(final>=worstPoss?'exceeded':'was near')+' the worst-case scenario.');
+
+  // Leaderboard — read AFTER save
+  const lb=getLb();
+  let lbHtml='';
+  if(!lb.length){
+    lbHtml='<div class="lb-empty">Scores will appear here as the class plays.</div>';
+  }else{
+    lb.forEach((s,i)=>{
+      lbHtml+=`<div class="lb-row${i===0?' top':''}">
+        <span class="lb-rank">${i===0?'★':i+1}</span>
+        <span class="lb-val">$${s.score.toLocaleString()}</span>
+        <span class="lb-yr">Born ${s.yr}</span>
+      </div>`;
+    });
+  }
+
+  document.getElementById('rpage').innerHTML=`
+    <div style="margin-bottom:1.25rem">
+      <span style="font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);display:block;line-height:1.8">
+        Finance 101 · Time Travel Portfolio · Born ${year} · ${year} → 30 March 2026 · ${span}-year hold
+      </span>
+    </div>
+
+    <div class="stat-bar">
+      <div class="sb-cell">
+        <div class="sb-lbl">Final Value</div>
+        <div class="sb-val" id="sbFinal">$10,000</div>
+        <div class="sb-sub">${span}-year hold</div>
+      </div>
+      <div class="sb-cell">
+        <div class="sb-lbl">Total Return</div>
+        <div class="sb-val ${+pct>=0?'pos':'neg'}">${+pct>=0?'+':''}${pct}%</div>
+        <div class="sb-sub">on $10,000</div>
+      </div>
+      <div class="sb-cell">
+        <div class="sb-lbl">Multiplier</div>
+        <div class="sb-val">×${mult}</div>
+        <div class="sb-sub">of capital</div>
+      </div>
+      <div class="sb-cell">
+        <div class="sb-lbl">Best Possible</div>
+        <div class="sb-val" style="font-size:clamp(.9rem,2.8vw,1.1rem)">$${bestPoss.toLocaleString()}</div>
+        <div class="sb-sub">${((final/bestPoss)*100).toFixed(0)}% of max</div>
+      </div>
+    </div>
+    <div class="r-headline"><div class="r-headline-text">${headline}</div></div>
+
+    <div class="r-cols">
+      <div class="r-panel">
+        <div class="ph"><span class="ph-title">Your Portfolio Breakdown</span></div>
+        <div id="bdRows">${bdHtml}</div>
+      </div>
+      <div class="r-panel">
+        <div class="ph"><span class="ph-title">Returns by Position</span></div>
+        <div class="chart-pad"><canvas id="rChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="improve-section">
+      <div class="improve-head">
+        <span class="improve-title">Could You Have Done Better? — Swap Analysis</span>
+        <span class="improve-delta">${totalGain>0?'+$'+totalGain.toLocaleString()+' available':'Optimal portfolio'}</span>
+      </div>
+      <div class="improve-body">${improveHtml}</div>
+    </div>
+
+    <div class="stories-label">What happened to your picks</div>
+    <div class="stories-grid">${storiesHtml}</div>
+
+    <div class="b-cols">
+      <div class="lb-wrap">
+        <div class="ph"><span class="ph-title">Class Leaderboard</span></div>
+        <div id="lbRows">${lbHtml}</div>
+        <button class="lb-clear" onclick="clearLb()">Clear scores</button>
+      </div>
+      <div class="analysis-wrap">
+        <div style="font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.875rem">
+          Portfolio Analysis · Born ${year}
+        </div>
+        <div class="an-title">${headline.replace(/<\/?strong>/g,'')}</div>
+        <div class="an-body">${comp}</div>
+        <div class="an-body">${bestLine}</div>
+        <span class="kt-head">Key Observations</span>
+        ${tks.map(t=>`<div class="kt-item">${t}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="r-footer">
+      <button class="btn btn-primary btn-lg" onclick="goTakeaways()">
+        Key Takeaways
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
+      </button>
+      <button class="btn" onclick="resetAll()">Play Again</button>
+    </div>`;
+
+  // Animate
+  setTimeout(()=>{
+    counterEl(document.getElementById('sbFinal'),0,final,1200);
+    rows.forEach((_,i)=>setTimeout(()=>document.getElementById('bdr'+i)?.classList.add('in'),130*i+350));
+    suggestions.forEach((_,i)=>setTimeout(()=>document.getElementById('imp'+i)?.classList.add('in'),100*i+600));
+    document.querySelectorAll('.story-card').forEach((c,i)=>setTimeout(()=>c.classList.add('in'),80*i+800));
+  },200);
+  setTimeout(()=>buildChart(rows),500);
+}
+
+function buildChart(rows){
+  if(chartInst)chartInst.destroy();
+  const ctx=document.getElementById('rChart');if(!ctx)return;
+  // Responsive height: shorter on mobile
+  const isMobile=window.innerWidth<600;
+  ctx.height=isMobile?180:220;
+  chartInst=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:rows.map(r=>r.st.name),
+      datasets:[{
+        data:rows.map(r=>r.val),
+        backgroundColor:rows.map(r=>r.ind.color+'25'),
+        borderColor:rows.map(r=>r.ind.color),
+        borderWidth:1.5,
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      animation:{duration:700,easing:'easeOutQuart'},
+      scales:{
+        x:{
+          grid:{color:'rgba(0,0,0,.05)'},
+          border:{color:'var(--border)'},
+          ticks:{color:'#94A3B8',font:{family:'IBM Plex Mono',size:isMobile?9:10},
+            callback:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)}
+        },
+        y:{
+          grid:{display:false},
+          border:{color:'var(--border)'},
+          ticks:{color:'#2D4057',font:{family:'IBM Plex Sans Condensed',size:isMobile?11:13,weight:'700'}}
+        }
+      },
+      plugins:{
+        legend:{display:false},
+        datalabels:{
+          anchor:'end',align:'end',offset:3,
+          color:'#0F1C2E',
+          font:{family:'IBM Plex Mono',size:isMobile?9:11,weight:'600'},
+          formatter:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)
+        }
+      },
+      layout:{padding:{right:isMobile?48:64}}
+    },
+    plugins:[ChartDataLabels]
+  });
+}
+
+/* ══════════════════════════════
+   S6
+══════════════════════════════ */
+function goTakeaways(){buildTakeaways();goTo(6);}
+function buildTakeaways(){
+  if(!results)return;
+  const{rows,final,year,span}=results;
+  const mult=(final/TOTAL).toFixed(1);
+  const bestRow=rows.reduce((b,r)=>r.mult>b.mult?r:b);
+  const worstRow=rows.reduce((b,r)=>r.mult<b.mult?r:b);
+  document.getElementById('tkSub').textContent=
+    '$10,000 invested in '+year+' became $'+final.toLocaleString()+' by 30 March 2026 — a ×'+mult+' return over '+span+' years.';
+  const fxBody={
+    2000:'AUD/USD was 0.55 in 2000 — a headwind for USD assets as the AUD strengthened through the commodity boom.',
+    2001:'AUD/USD was 0.52 in 2001 — a headwind initially, but the AUD then strengthened through the following decade.',
+    2002:'AUD/USD was 0.54 in 2002. The commodity cycle then drove AUD sharply higher.',
+    2003:'AUD/USD was 0.65 in 2003 vs ~0.63 today — near-neutral currency effect on USD returns.',
+    2004:'AUD/USD was 0.74 in 2004 vs ~0.63 today. ~17% extra return on USD stocks from currency alone.',
+    2005:'AUD/USD was 0.77 in 2005 vs ~0.63 today. A <strong>~22% currency tailwind</strong> on top of USD stock returns.',
+    2006:'AUD/USD was 0.76 in 2006 vs ~0.63 today. A <strong>~21% currency tailwind</strong> amplifies all USD returns.',
+    2007:'AUD/USD was 0.88 in 2007 vs ~0.63 today. A <strong>~40% tailwind</strong> — currency can be as important as stock selection.',
+    2008:'AUD/USD was 0.85 in 2008 vs ~0.63 today. A <strong>~35% tailwind</strong> — every USD gain converts to AUD at a premium.',
+  }[year]||'';
+  const cards=[
+    {num:'01',title:'Time in the Market',
+     body:'Your '+span+'-year journey proves that <strong>time is the most powerful force in investing</strong>. Even average companies become extraordinary over decades of compounding.'},
+    {num:'02',title:'Counter-intuitive Returns',
+     body:'Your best pick, <strong>'+bestRow.st.name+' ×'+bestRow.mult+'</strong>, likely wasn\'t the consensus choice. The highest returns come from companies the market underestimates.'},
+    {num:'03',title:'Diversification',
+     body:'Five industries, five different macro drivers. <strong>Correlation matters</strong> — when mining falls on China demand, healthcare runs on demographics and tech on innovation cycles.'},
+    {num:'04',title:'Currency Effect ('+year+')',body:fxBody},
+    {num:'05',title:'Weakest Pick',
+     body:'<strong>'+worstRow.st.name+' ×'+worstRow.mult+'</strong> — '+(worstRow.mult<2?'barely grew in real terms. Familiar brands are not always sound investments.':'even this underperformer grew your capital. Diversification prevents one weak pick from defining the outcome.')},
+    {num:'06',title:'Consensus vs. Conviction',
+     body:'CSL, Cochlear, Fortescue, Macquarie — <strong>all dismissed by mainstream consensus</strong> at some point. Independent judgment, held with patience, is a genuinely durable edge.'},
+  ];
+  const winners=rows.filter(r=>r.st.verdict==='win');
+  document.getElementById('tkFooter').textContent=
+    'You identified '+winners.length+' of 5 counter-intuitive winners. '+
+    (winners.length>=4?'Outstanding.':winners.length>=3?'Above average.':
+     winners.length>=2?'Room to develop contrarian thinking.':'The market always has more to teach us.')+
+    ' The best investors don\'t know more — they understand uncertainty better.';
+  const grid=document.getElementById('tkGrid');grid.innerHTML='';
+  cards.forEach((c,i)=>{
+    const el=document.createElement('div');el.className='tk-card';
+    el.innerHTML=`<span class="tk-num">${c.num}</span><div class="tk-title">${c.title}</div><div class="tk-body">${c.body}</div>`;
+    grid.appendChild(el);
+    setTimeout(()=>el.classList.add('in'),90*i+200);
+  });
+}
+
+/* ══════════════════════════════
+   LEADERBOARD
+══════════════════════════════ */
+function getLb(){return JSON.parse(localStorage.getItem(LB_KEY)||'[]');}
+function saveLb(score,yr){
+  let lb=getLb();
+  lb.push({score,yr,ts:Date.now()});
+  lb.sort((a,b)=>b.score-a.score);
+  lb=lb.slice(0,8);
+  localStorage.setItem(LB_KEY,JSON.stringify(lb));
+}
+function clearLb(){
+  localStorage.removeItem(LB_KEY);
+  const el=document.getElementById('lbRows');
+  if(el)el.innerHTML='<div class="lb-empty">Scores will appear here as the class plays.</div>';
+}
+
+/* ══════════════════════════════
+   COUNTER
+══════════════════════════════ */
+function counterEl(el,from,to,ms){
+  const t=performance.now();
+  const f=now=>{
+    const p=Math.min((now-t)/ms,1),e=1-Math.pow(1-p,3);
+    el.textContent='$'+Math.round(from+(to-from)*e).toLocaleString();
+    if(p<1)requestAnimationFrame(f);
+  };
+  requestAnimationFrame(f);
+}
+
+/* ══════════════════════════════
+   RESET
+══════════════════════════════ */
+function resetAll(){
+  S={year:null,picks:{},alloc:{}};results=null;
+  if(chartInst){chartInst.destroy();chartInst=null;}
+  document.getElementById('heroActions').style.display='flex';
+  document.getElementById('yearSection').style.display='none';
+  document.getElementById('eraBadge').classList.remove('vis');
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('indCont').innerHTML='';
+  document.getElementById('rpage').innerHTML='';
+  document.getElementById('tkGrid').innerHTML='';
+  document.getElementById('tlCta').classList.remove('vis');
+  document.getElementById('tlYear').textContent='—';
+  document.getElementById('tlFill').style.width='0%';
+  buildYearGrid();goTo(1);
+}
+
+buildYearGrid();
+</script>
+</body>
+</html>
