@@ -37,32 +37,18 @@
 html,body{width:100%;height:100%;overflow:hidden}
 body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.55}
 
-/* ── SCREENS ── */
-.screen{
-  position:fixed;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;
-  transition:opacity .42s ease,transform .42s ease;
-  transform:translateY(14px);
-  overflow-y:auto;
-  padding:2rem 1.5rem;
-  background:var(--bg);
-}
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .42s ease,transform .42s ease;transform:translateY(14px);overflow-y:auto;padding:2rem 1.5rem;background:var(--bg)}
 .screen.active{opacity:1;pointer-events:all;transform:translateY(0)}
 .screen.exit-up{opacity:0;transform:translateY(-18px);pointer-events:none}
 
-/* ── PROGRESS ── */
 .prule{position:fixed;top:0;left:0;height:2px;background:var(--blue);transition:width .5s ease;z-index:999;pointer-events:none}
 .prule::after{content:'';position:absolute;right:-20px;top:0;width:40px;height:2px;background:var(--ice);filter:blur(4px)}
 
-/* ── TYPE ── */
 .eyebrow{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:.875rem}
 .d1{font-family:var(--fn-cond);font-size:clamp(2.5rem,7vw,5rem);font-weight:700;color:var(--t1);letter-spacing:-.022em;line-height:1.0;margin-bottom:1rem}
 .d2{font-family:var(--fn-cond);font-size:clamp(1.6rem,4vw,2.75rem);font-weight:700;color:var(--t1);letter-spacing:-.02em;line-height:1.05;margin-bottom:.75rem}
 .body-lg{font-size:15px;font-weight:300;color:var(--t3);line-height:1.75;max-width:520px}
 
-/* ── BUTTONS ── */
 .btn{font-family:var(--fn-cond);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--border2);background:var(--surface);color:var(--t2);padding:.65rem 1.375rem;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.5rem;white-space:nowrap}
 .btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bg)}
 .btn-primary{background:var(--navy);border-color:var(--navy);color:#fff}
@@ -74,7 +60,6 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .nav-back:hover{color:var(--t2)}
 .nav-back:hover::before{width:26px}
 
-/* ── YEAR ── */
 .year-grid{display:grid;grid-template-columns:repeat(9,1fr);border:1px solid var(--border)}
 @media(max-width:480px){.year-grid{grid-template-columns:repeat(3,1fr)}}
 .yb{font-family:var(--fn-mono);font-size:13px;font-weight:500;color:var(--t3);background:var(--surface);border:none;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:.75rem .25rem;cursor:pointer;transition:all .12s;text-align:center}
@@ -85,14 +70,12 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .era-note.vis{display:block}
 .era-note strong{color:var(--t1);font-weight:600}
 
-/* ── HERO ── */
 #s1{justify-content:center}
 .hero-wrap{max-width:640px;width:100%}
 .hero-meta{display:flex;align-items:center;gap:1.25rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap}
 .hero-stat{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--t4)}
 .hero-stat strong{display:block;font-size:13px;font-weight:600;color:var(--t2);letter-spacing:0;margin-top:.1rem;font-family:var(--fn-cond)}
 
-/* ── INDUSTRY ── */
 .ind-screen{justify-content:flex-start;padding-top:2rem}
 .ind-wrap{max-width:900px;width:100%}
 .ind-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem}
@@ -108,18 +91,8 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .ind-title{font-family:var(--fn-cond);font-size:clamp(1.4rem,3.5vw,2.25rem);font-weight:700;color:var(--t1);letter-spacing:-.015em;display:flex;align-items:center;gap:.625rem}
 .ind-color-mark{width:3px;height:1.6em;flex-shrink:0}
 .ind-note{font-family:var(--fn-mono);font-size:10px;color:var(--t4);letter-spacing:.04em;margin-top:.3rem}
-
-/* Stock cards — 3 col desktop, 1 col mobile */
-.stock-cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1px;
-  background:var(--border);
-  border:1px solid var(--border);
-  margin-bottom:1.25rem;
-}
+.stock-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.25rem}
 @media(max-width:600px){.stock-cards{grid-template-columns:1fr}}
-
 .sc-card{background:var(--surface);padding:1.25rem;cursor:pointer;transition:background .12s;position:relative;display:flex;flex-direction:column;gap:.5rem}
 .sc-card:hover:not(.sc-na){background:var(--bg2)}
 .sc-card.sc-on{background:#EBF2FF}
@@ -134,14 +107,13 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .sc-na-label{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);padding:.25em .6em;border:1px solid var(--border)}
 .sc-sel-label{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);display:none}
 .sc-card.sc-on .sc-sel-label{display:block}
-
 .ind-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
 .ind-prompt{font-family:var(--fn-mono);font-size:10px;font-weight:500;letter-spacing:.1em;color:var(--t4)}
 .ind-prompt.chosen{color:var(--ok)}
 
-/* ── ALLOC ── */
+/* ── ALLOC — enhanced ── */
 #s3{justify-content:center}
-.alloc-wrap{max-width:540px;width:100%}
+.alloc-wrap{max-width:560px;width:100%}
 .budget-strip{display:flex;align-items:flex-end;justify-content:space-between;padding:1rem 1.125rem;background:var(--navy);margin-bottom:1px}
 .bs-label{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:.2rem}
 .bs-val{font-family:var(--fn-mono);font-size:clamp(1.5rem,5vw,2rem);font-weight:600;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
@@ -153,22 +125,79 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .bbar{height:100%;background:var(--blue);transition:width .25s}
 .bbar.done{background:var(--ok)}
 .bbar.over{background:var(--err)}
+
+/* Alloc table */
 .alloc-table{border:1px solid var(--border)}
-.alloc-row{display:flex;align-items:center;gap:.875rem;padding:.75rem 1rem;border-bottom:1px solid var(--border);background:var(--surface);transition:background .12s}
-.alloc-row:last-child{border-bottom:none}
-.alloc-row:hover{background:var(--bg)}
-.ar-bar{width:2px;height:28px;flex-shrink:0}
-.ar-info{flex:1;min-width:0}
-.ar-name{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1)}
+.alloc-item{border-bottom:1px solid var(--border);background:var(--surface)}
+.alloc-item:last-child{border-bottom:none}
+
+/* Main row — always visible */
+.alloc-main-row{
+  display:flex;align-items:center;gap:.875rem;
+  padding:.875rem 1rem;
+  transition:background .12s;
+}
+.alloc-main-row:hover{background:var(--bg)}
+.ar-bar{width:2px;height:36px;flex-shrink:0;align-self:stretch;margin:-0px 0}
+.ar-left{flex:1;min-width:0}
+.ar-ind-label{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.15rem}
+.ar-name{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1);line-height:1.2}
 .ar-ticker{font-family:var(--fn-mono);font-size:10px;color:var(--t4);letter-spacing:.08em;margin-top:.1rem}
-.ar-ctrl{display:flex;align-items:center;gap:.5rem}
+.ar-right{display:flex;align-items:center;gap:.625rem;flex-shrink:0}
+.ar-ctrl{display:flex;align-items:center;gap:.4rem}
 .ar-btn{width:28px;height:28px;border:1px solid var(--border2);background:var(--bg);color:var(--t2);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;font-family:var(--fn-sans);flex-shrink:0}
 .ar-btn:hover:not(:disabled){background:var(--navy);color:#fff;border-color:var(--navy)}
 .ar-btn:disabled{opacity:.2;cursor:not-allowed}
-.ar-amt{font-family:var(--fn-mono);font-size:13px;font-weight:600;color:var(--t1);text-align:center;min-width:64px;font-variant-numeric:tabular-nums}
+.ar-amt{font-family:var(--fn-mono);font-size:13px;font-weight:600;color:var(--t1);text-align:center;min-width:58px;font-variant-numeric:tabular-nums}
 .ar-amt small{display:block;font-size:9px;font-weight:400;color:var(--t4);letter-spacing:.05em;margin-top:.1rem}
 
-/* ── TIMELINE ── */
+/* Change button */
+.ar-change-btn{
+  font-family:var(--fn-mono);
+  font-size:9px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--blue);
+  background:none;
+  border:1px solid var(--blue);
+  padding:.3em .7em;
+  cursor:pointer;
+  transition:all .15s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.ar-change-btn:hover{background:var(--blue);color:#fff}
+.ar-change-btn.open{background:var(--blue);color:#fff}
+
+/* Inline picker — hidden by default */
+.alloc-picker{
+  display:none;
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  padding:.875rem 1rem;
+  gap:.5rem;
+}
+.alloc-picker.open{display:flex;flex-wrap:wrap}
+.picker-opt{
+  font-family:var(--fn-cond);
+  font-size:13px;font-weight:600;
+  padding:.5rem .875rem;
+  border:1px solid var(--border2);
+  background:var(--surface);
+  color:var(--t2);
+  cursor:pointer;
+  transition:all .15s;
+  display:flex;flex-direction:column;gap:.15rem;
+  flex:1;min-width:120px;
+  position:relative;
+}
+.picker-opt:hover:not(.picker-na){border-color:var(--blue);background:#EBF2FF;color:var(--blue)}
+.picker-opt.picker-selected{background:#EBF2FF;border-color:var(--blue);color:var(--blue)}
+.picker-opt.picker-selected::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)}
+.picker-opt.picker-na{opacity:.3;cursor:not-allowed}
+.picker-opt-name{font-size:14px;font-weight:700}
+.picker-opt-ticker{font-family:var(--fn-mono);font-size:9.5px;color:var(--t4);letter-spacing:.08em}
+
+/* TIMELINE */
 #s4{background:var(--navy2);justify-content:center;overflow:hidden}
 .tl-grid-bg{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(255,255,255,.022) 59px,rgba(255,255,255,.022) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(255,255,255,.022) 59px,rgba(255,255,255,.022) 60px)}
 .tl-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.035) 3px,rgba(0,0,0,.035) 4px);pointer-events:none}
@@ -188,27 +217,12 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .flash-el{position:fixed;inset:0;background:#fff;pointer-events:none;z-index:500;opacity:0;transition:opacity .08s}
 .flash-el.on{opacity:.75}
 
-/* ════════════════════════════════
-   RESULTS — FULLY RESPONSIVE
-════════════════════════════════ */
+/* RESULTS */
 #s5{justify-content:flex-start;align-items:stretch;padding:0;overflow-y:auto}
 .rpage{max-width:1060px;margin:0 auto;padding:1.75rem 1rem 4rem;width:100%}
 @media(min-width:600px){.rpage{padding:2.5rem 1.5rem 4rem}}
-
-/* Stat bar — 2×2 grid on mobile, 4-col on desktop */
-.stat-bar{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  border:1px solid var(--border);
-  background:var(--border); /* gap colour */
-  gap:1px;
-  margin-bottom:1px;
-}
-@media(min-width:600px){
-  .stat-bar{
-    grid-template-columns:1fr 1fr 1fr 1fr;
-  }
-}
+.stat-bar{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);background:var(--border);gap:1px;margin-bottom:1px}
+@media(min-width:600px){.stat-bar{grid-template-columns:1fr 1fr 1fr 1fr}}
 .sb-cell{padding:.875rem 1rem;background:var(--surface)}
 @media(min-width:600px){.sb-cell{padding:1.125rem 1.25rem}}
 .sb-lbl{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.35rem}
@@ -216,29 +230,16 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .sb-val.pos{color:var(--ok)}
 .sb-val.neg{color:var(--err)}
 .sb-sub{font-size:11px;color:var(--t4);margin-top:.15rem}
-
-/* Headline */
 .r-headline{padding:.875rem 1rem;background:var(--navy);margin-bottom:1.5rem}
 @media(min-width:600px){.r-headline{padding:.875rem 1.25rem}}
 .r-headline-text{font-family:var(--fn-cond);font-size:clamp(13px,2.5vw,14px);font-weight:400;color:rgba(255,255,255,.55);line-height:1.5}
 .r-headline-text strong{color:rgba(255,255,255,.9);font-weight:600}
-
-/* Two-col: stacks on mobile */
-.r-cols{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:1px;
-  background:var(--border);
-  margin-bottom:1px;
-}
+.r-cols{display:grid;grid-template-columns:1fr;gap:1px;background:var(--border);margin-bottom:1px}
 @media(min-width:680px){.r-cols{grid-template-columns:1fr 1fr}}
 .r-panel{background:var(--surface)}
-
 .ph{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border)}
 @media(min-width:600px){.ph{padding:.55rem 1.125rem}}
 .ph-title{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4)}
-
-/* Breakdown rows */
 .bd-row{display:flex;align-items:center;gap:.75rem;padding:.875rem 1rem;border-bottom:1px solid var(--border);opacity:0;transform:translateX(6px);transition:opacity .3s,transform .3s}
 .bd-row:last-child{border-bottom:none}
 .bd-row.in{opacity:1;transform:translateX(0)}
@@ -254,29 +255,13 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .bd-mult.md{color:var(--warn)}
 .bd-mult.lo{color:var(--err)}
 .chart-pad{padding:.875rem}
-
-/* Improvement suggestions */
 .improve-section{margin-bottom:1px}
-.improve-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.55rem 1rem;background:var(--bg2);
-  border:1px solid var(--border);border-bottom:none;
-  flex-wrap:wrap;gap:.5rem;
-}
+.improve-head{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;background:var(--bg2);border:1px solid var(--border);border-bottom:none;flex-wrap:wrap;gap:.5rem}
 @media(min-width:600px){.improve-head{padding:.55rem 1.125rem}}
 .improve-title{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4)}
 .improve-delta{font-family:var(--fn-mono);font-size:10.5px;font-weight:600;color:var(--ok)}
 .improve-body{border:1px solid var(--border)}
-
-.improve-row{
-  display:flex;
-  align-items:flex-start;
-  gap:.75rem;
-  padding:.875rem 1rem;
-  border-bottom:1px solid var(--border);
-  opacity:0;transform:translateY(5px);
-  transition:opacity .35s,transform .35s;
-}
+.improve-row{display:flex;align-items:flex-start;gap:.75rem;padding:.875rem 1rem;border-bottom:1px solid var(--border);opacity:0;transform:translateY(5px);transition:opacity .35s,transform .35s}
 .improve-row:last-child{border-bottom:none}
 .improve-row.in{opacity:1;transform:translateY(0)}
 .improve-row.no-change{opacity:.55}
@@ -284,7 +269,7 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .ir-ind{width:2px;height:36px;flex-shrink:0;margin-top:2px}
 .ir-info{flex:1;min-width:0}
 .ir-ind-name{font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.2rem}
-.ir-swap{font-family:var(--fn-cond);font-size:14px;font-weight:700;color:var(--t1);line-height:1.3;flex-wrap:wrap}
+.ir-swap{font-family:var(--fn-cond);font-size:14px;font-weight:700;color:var(--t1);line-height:1.3}
 .ir-swap .kept{color:var(--t3);font-weight:500}
 .ir-swap .arrow{color:var(--t4);font-weight:400;margin:0 .3rem}
 .ir-swap .better{color:var(--ok)}
@@ -294,8 +279,6 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .ir-gain.pos{color:var(--ok)}
 .ir-gain.zero{color:var(--t4)}
 .ir-gain-label{font-size:10px;color:var(--t4);margin-top:.1rem;font-family:var(--fn-mono)}
-
-/* Stories */
 .stories-label{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);padding:.625rem 0;border-bottom:1px solid var(--border);margin-bottom:1px}
 .stories-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--border);margin-bottom:1px}
 @media(min-width:540px){.stories-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}}
@@ -312,28 +295,10 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .verdict.win{color:var(--ok);border-color:var(--ok);background:var(--okbg)}
 .verdict.loss{color:var(--err);border-color:var(--err);background:var(--errbg)}
 .verdict.mid{color:var(--warn);border-color:var(--warn);background:var(--warnbg)}
-
-/* Bottom: leaderboard + analysis
-   KEY FIX: always stacks on mobile, side-by-side only on wider screens */
-.b-cols{
-  display:grid;
-  grid-template-columns:1fr;   /* mobile: single column */
-  gap:1px;
-  background:var(--border);
-  margin-bottom:1px;
-}
-@media(min-width:720px){
-  .b-cols{grid-template-columns:220px 1fr}  /* desktop: fixed lb width */
-}
-
-/* Leaderboard */
+.b-cols{display:grid;grid-template-columns:1fr;gap:1px;background:var(--border);margin-bottom:1px}
+@media(min-width:720px){.b-cols{grid-template-columns:220px 1fr}}
 .lb-wrap{background:var(--surface)}
-.lb-row{
-  display:flex;align-items:center;gap:.875rem;
-  padding:.7rem 1rem;
-  border-bottom:1px solid var(--border);
-  transition:background .12s;
-}
+.lb-row{display:flex;align-items:center;gap:.875rem;padding:.7rem 1rem;border-bottom:1px solid var(--border);transition:background .12s}
 .lb-row:hover{background:var(--bg2)}
 .lb-row.top{background:#EBF2FF}
 .lb-rank{font-family:var(--fn-mono);font-size:12px;font-weight:600;color:var(--t4);width:22px;text-align:center;flex-shrink:0}
@@ -344,8 +309,6 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .lb-empty{padding:1.25rem 1rem;font-family:var(--fn-mono);font-size:11px;color:var(--t4);line-height:1.6}
 .lb-clear{width:100%;padding:.5rem;background:none;border:none;border-top:1px solid var(--border);color:var(--t4);font-size:10.5px;cursor:pointer;font-family:var(--fn-mono);transition:color .15s;letter-spacing:.06em}
 .lb-clear:hover{color:var(--err)}
-
-/* Analysis */
 .analysis-wrap{background:var(--surface);padding:1.125rem 1rem}
 @media(min-width:600px){.analysis-wrap{padding:1.25rem 1.375rem}}
 .an-title{font-family:var(--fn-cond);font-size:15px;font-weight:700;color:var(--t1);line-height:1.4;margin-bottom:.875rem;letter-spacing:-.01em}
@@ -357,15 +320,9 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 .kt-item strong{color:var(--t2);font-weight:600}
 .r-footer{display:flex;gap:.875rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--border);margin-top:1px;align-items:center}
 
-/* ── TAKEAWAYS ── */
 #s6{justify-content:center;overflow-y:auto}
 .tk-wrap{max-width:740px;width:100%}
-.tk-grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:1px;background:var(--border);
-  border:1px solid var(--border);margin:1.5rem 0;
-}
+.tk-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:1.5rem 0}
 @media(min-width:480px){.tk-grid{grid-template-columns:1fr 1fr}}
 .tk-card{background:var(--surface);padding:1.125rem;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
 @media(min-width:600px){.tk-card{padding:1.25rem 1.375rem}}
@@ -424,16 +381,18 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
   </div>
 </div>
 
-<!-- S2 INDUSTRY (JS) -->
+<!-- S2 -->
 <div id="indCont"></div>
 
-<!-- S3 ALLOCATE -->
+<!-- S3 ALLOCATE — enhanced with inline change -->
 <div class="screen" id="s3">
   <div class="alloc-wrap">
     <div style="margin-bottom:1.5rem">
       <span class="eyebrow">Allocation</span>
-      <h2 class="d2">Distribute Capital</h2>
-      <p style="font-size:13px;color:var(--t3);font-weight:300">Spread $10,000 across your five picks. Minimum $500 per position.</p>
+      <h2 class="d2">Review &amp; Distribute</h2>
+      <p style="font-size:13px;color:var(--t3);font-weight:300">
+        Confirm your picks and spread $10,000 across your five positions. Tap <strong style="color:var(--t2)">Change</strong> to swap any selection.
+      </p>
     </div>
     <div class="budget-strip">
       <div>
@@ -457,7 +416,7 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
   </div>
 </div>
 
-<!-- S4 TIMELINE -->
+<!-- S4 -->
 <div class="screen" id="s4">
   <div class="tl-grid-bg"></div>
   <div class="tl-scan"></div>
@@ -472,8 +431,7 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
     </div>
     <div class="tl-cta" id="tlCta">
       <div class="tl-cta-note">Portfolio valued — 30 March 2026</div>
-      <button class="btn btn-lg" id="tlViewBtn"
-        style="background:#fff;color:var(--navy);border-color:#fff;margin-top:.5rem">
+      <button class="btn btn-lg" id="tlViewBtn" style="background:#fff;color:var(--navy);border-color:#fff;margin-top:.5rem">
         View Portfolio Performance
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
       </button>
@@ -481,12 +439,12 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
   </div>
 </div>
 
-<!-- S5 RESULTS -->
+<!-- S5 -->
 <div class="screen" id="s5">
   <div class="rpage" id="rpage"></div>
 </div>
 
-<!-- S6 TAKEAWAYS -->
+<!-- S6 -->
 <div class="screen" id="s6">
   <div class="tk-wrap">
     <span class="eyebrow">Finance 101 · Key Takeaways</span>
@@ -508,176 +466,89 @@ body{font-family:var(--fn-sans);background:var(--bg);color:var(--t2);-webkit-fon
 </div>
 
 <script>
-/* ══════════════════════════════
-   DATA
-══════════════════════════════ */
 const IND=[
   {id:'mining',name:'Mining & Resources',color:'#B45309',
    note:'ASX · AUD total return incl. franked dividends',
    stocks:[
-    {name:'BHP',ticker:'BHP.AX',
-     desc:'World\'s largest diversified miner. Iron ore, copper and potash across six continents. One of the ASX\'s biggest dividend payers.',
-     verdict:'mid',
+    {name:'BHP',ticker:'BHP.AX',desc:'World\'s largest diversified miner. Iron ore, copper and potash across six continents.',verdict:'mid',
      data:{2000:9.5,2001:11,2002:11.5,2003:9,2004:7,2005:5,2006:3.5,2007:2.8,2008:3.5},
      story:'Iron ore, copper and potash across six continents. Massive franked dividends anchor every Australian super fund. Reliable, cyclical, and utterly unglamorous — the bedrock of "set and forget" Australian portfolios.'},
-    {name:'Rio Tinto',ticker:'RIO.AX',
-     desc:'Global iron ore, aluminium and copper giant. Some of the world\'s lowest-cost mining assets in Western Australia\'s Pilbara.',
-     verdict:'mid',
+    {name:'Rio Tinto',ticker:'RIO.AX',desc:'Global iron ore, aluminium and copper giant with some of the world\'s lowest-cost mining assets.',verdict:'mid',
      data:{2000:10,2001:12,2002:13,2003:9,2004:6,2005:4,2006:3.5,2007:2.5,2008:3},
-     story:'Pilbara iron ore operations are among the lowest-cost on earth. Strong franked dividends but heavily exposed to China\'s industrial cycle — the 2011–2015 commodity slump tested patience for years.'},
-    {name:'Fortescue',ticker:'FMG.AX',
-     desc:'Australian iron ore producer built against expert consensus by Andrew Forrest. Listed on the ASX in August 2003.',
-     verdict:'win',
+     story:'Pilbara iron ore operations are among the lowest-cost on earth. Strong franked dividends but heavily exposed to China\'s industrial cycle.'},
+    {name:'Fortescue',ticker:'FMG.AX',desc:'Iron ore empire built against expert consensus by Andrew Forrest. Listed August 2003.',verdict:'win',
      data:{2000:null,2001:null,2002:null,2003:null,2004:120,2005:90,2006:45,2007:18,2008:6},
-     story:'Every expert said Pilbara iron ore was sewn up by BHP and Rio. Andrew Forrest built a $25B empire anyway. $1,000 invested in 2005 became roughly $90,000. The contrarian bet nobody took seriously.'},
-  ]},
+     story:'Every expert said Pilbara iron ore was sewn up. Andrew Forrest built a $25B empire anyway. $1,000 in 2005 became roughly $90,000.'},
+   ]},
   {id:'retail',name:'Retail & E-Commerce',color:'#0F766E',
    note:'AUD · ASX stocks native; Amazon converted at AUD/USD rates',
    stocks:[
-    {name:'Woolworths',ticker:'WOW.AX',
-     desc:'Australia\'s largest supermarket chain with over 1,000 stores. Half of the country\'s dominant grocery duopoly.',
-     verdict:'mid',
+    {name:'Woolworths',ticker:'WOW.AX',desc:'Australia\'s largest supermarket chain. Half of the country\'s dominant grocery duopoly.',verdict:'mid',
      data:{2000:8,2001:7.5,2002:7,2003:5,2004:3.5,2005:2.5,2006:2,2007:1.5,2008:1.1},
-     story:'Half of Australia\'s supermarket duopoly. Reliable franked dividends through COVID and cost-of-living crises. But facing Aldi, Costco, and Amazon Fresh — the moat is narrowing.'},
-    {name:'Amazon',ticker:'AMZN',
-     desc:'American e-commerce and cloud giant. Started as an online bookstore. Now runs AWS cloud, Prime Video, Alexa and global logistics.',
-     verdict:'win',
+     story:'Half of Australia\'s supermarket duopoly. Reliable franked dividends but facing Aldi, Costco, and Amazon Fresh — the moat is narrowing.'},
+    {name:'Amazon',ticker:'AMZN',desc:'E-commerce and cloud giant. Started as an online bookstore, now runs AWS, Prime Video and global logistics.',verdict:'win',
      data:{2000:32,2001:28,2002:25,2003:20,2004:17,2005:15,2006:12,2007:8,2008:6},
-     story:'Survived the dot-com crash at $0.80/share (split-adjusted), then built AWS, Prime, and Alexa while the market slept. Returns shown in AUD — currency effects vary but the stock\'s rise dwarfed them all.'},
-    {name:'JB Hi-Fi',ticker:'JBH.AX',
-     desc:'Australian consumer electronics retailer. Listed October 2003. Analysts predicted Amazon would destroy it — they were wrong.',
-     verdict:'win',
+     story:'Survived the dot-com crash, then built AWS, Prime, and Alexa while the market slept. The stock\'s rise dwarfed all currency effects.'},
+    {name:'JB Hi-Fi',ticker:'JBH.AX',desc:'Australian electronics retailer. Listed October 2003. Analysts predicted Amazon would destroy it — they were wrong.',verdict:'win',
      data:{2000:null,2001:null,2002:null,2003:null,2004:38,2005:30,2006:22,2007:12,2008:8},
-     story:'Every year analysts predicted Amazon would destroy JB Hi-Fi. Instead it adapted, acquired The Good Guys, and kept prices sharp. From $3 in 2005 to $90 today — the retailer that refused to die.'},
-  ]},
+     story:'Every year analysts predicted Amazon would destroy JB Hi-Fi. Instead it adapted, acquired The Good Guys, kept prices sharp. From $3 in 2005 to $90 today.'},
+   ]},
   {id:'health',name:'Healthcare',color:'#6D28D9',
    note:'ASX · AUD total return including dividends',
    stocks:[
-    {name:'Cochlear',ticker:'COH.AX',
-     desc:'Australian company that invented the bionic ear implant. Dominant global market share. Each new device generation drives upgrade demand.',
-     verdict:'win',
+    {name:'Cochlear',ticker:'COH.AX',desc:'Invented the bionic ear implant. Dominant global market share. Each new device drives upgrade demand.',verdict:'win',
      data:{2000:38,2001:32,2002:28,2003:22,2004:14,2005:7,2006:6,2007:5.5,2008:5},
-     story:'Cochlear invented the bionic ear and has never stopped improving it. Each device generation prompts recipients to upgrade. A premium, globally dominant monopoly moat.'},
-    {name:'CSL',ticker:'CSL.AX',
-     desc:'Global biotech company, originally a government vaccine lab privatised in 1994. World leader in blood plasma products and flu vaccines.',
-     verdict:'win',
+     story:'Cochlear invented the bionic ear and never stopped improving it. A premium, globally dominant monopoly moat.'},
+    {name:'CSL',ticker:'CSL.AX',desc:'Global biotech, originally a government vaccine lab privatised in 1994. World leader in blood plasma products.',verdict:'win',
      data:{2000:75,2001:65,2002:58,2003:48,2004:28,2005:13,2006:11,2007:9,2008:8},
-     story:'Transformed from a government vaccine lab into a $130B global biotech. From $4 in 2001 to $280 today — one of the greatest wealth creation stories in ASX history.'},
-    {name:'Ramsay Health Care',ticker:'RHC.AX',
-     desc:'Australia\'s largest private hospital operator, expanded to 18 countries across Asia, Europe and Australia.',
-     verdict:'mid',
+     story:'From government vaccine lab to $130B global biotech. From $4 in 2001 to $280 today — one of the greatest ASX wealth creation stories.'},
+    {name:'Ramsay Health Care',ticker:'RHC.AX',desc:'Australia\'s largest private hospital operator, expanded to 18 countries.',verdict:'mid',
      data:{2000:18,2001:15,2002:13,2003:11,2004:8,2005:5,2006:4,2007:3,2008:2.5},
-     story:'Ageing populations need more hospitals. Ramsay grew from Queensland to 18 countries, becoming the world\'s 3rd-largest private hospital group. Demographics as a business model.'},
-  ]},
+     story:'Ageing populations need more hospitals. Ramsay grew from Queensland to 18 countries, becoming the world\'s 3rd-largest private hospital group.'},
+   ]},
   {id:'bank',name:'Banking',color:'#1D4ED8',
    note:'ASX · AUD total return incl. fully franked dividends',
    stocks:[
-    {name:'Commonwealth Bank',ticker:'CBA.AX',
-     desc:'Australia\'s largest bank by market cap. Near-monopoly on everyday banking. Consistently highest-returning of the Big Four.',
-     verdict:'mid',
+    {name:'Commonwealth Bank',ticker:'CBA.AX',desc:'Australia\'s largest bank. Near-monopoly on everyday banking. Highest-returning of the Big Four.',verdict:'mid',
      data:{2000:16,2001:15,2002:14,2003:12,2004:9,2005:6,2006:5,2007:4,2008:3},
-     story:'Near-monopoly on everyday banking. Highest return of the Big Four — mostly thanks to franking credits and consistent dividends. Everyone complains about the fees; the shareholders don\'t.'},
-    {name:'ANZ',ticker:'ANZ.AX',
-     desc:'One of Australia\'s Big Four banks. Pursued an ambitious pan-Asian expansion strategy from 2010, quietly abandoned by 2017.',
-     verdict:'loss',
+     story:'Near-monopoly on everyday banking. Highest return of the Big Four. Everyone complains about the fees; the shareholders don\'t.'},
+    {name:'ANZ',ticker:'ANZ.AX',desc:'Big Four bank. Pursued an ambitious Asian expansion from 2010, quietly abandoned by 2017.',verdict:'loss',
      data:{2000:6,2001:5.5,2002:5,2003:4.5,2004:3.5,2005:2.5,2006:2.2,2007:2,2008:1.8},
-     story:'In 2010 ANZ\'s Asian expansion looked visionary. By 2017 they were retreating. Weakest price performer of the Big Four — compensated by franked dividends, but lagging CBA by a wide margin.'},
-    {name:'Macquarie Group',ticker:'MQG.AX',
-     desc:'"The Millionaires\' Factory." Transformed from an investment bank into the world\'s largest infrastructure asset manager.',
-     verdict:'win',
+     story:'Asian expansion looked visionary in 2010. By 2017 they were retreating. Weakest price performer of the Big Four.'},
+    {name:'Macquarie Group',ticker:'MQG.AX',desc:'"The Millionaires\' Factory." Transformed from investment bank to world\'s largest infrastructure asset manager.',verdict:'win',
      data:{2000:22,2001:20,2002:18,2003:15,2004:12,2005:8,2006:6,2007:2.5,2008:3},
-     story:'Reinvented from investment bank into the world\'s largest infrastructure asset manager. From $15 in 2001 to $230 today. 2007 buyers watched 82% disappear in the GFC before the long recovery.'},
-  ]},
+     story:'Reinvented from investment bank into the world\'s largest infrastructure asset manager. From $15 in 2001 to $230 today.'},
+   ]},
   {id:'tech',name:'Technology',color:'#0E7490',
    note:'AUD · USD returns converted at prevailing AUD/USD rates',
    stocks:[
-    {name:'Microsoft',ticker:'MSFT',
-     desc:'American software and cloud giant. Reinvented under Satya Nadella with Azure cloud from 2014. Central to enterprise AI via OpenAI.',
-     verdict:'win',
+    {name:'Microsoft',ticker:'MSFT',desc:'Software and cloud giant. Reinvented under Satya Nadella with Azure from 2014.',verdict:'win',
      data:{2000:12,2001:14,2002:16,2003:18,2004:19,2005:20,2006:18,2007:16,2008:17},
-     story:'Written off as a dinosaur at $30 in the iPhone era. Satya Nadella bet the company on Azure cloud in 2014. 2000 buyers paid dot-com peak prices — lower return than 2003–2005 buyers despite longer hold.'},
-    {name:'Apple',ticker:'AAPL',
-     desc:'American tech company. Near-bankrupt in 1997. Transformed by iPod, iPhone, App Store, iPad, AirPods and a growing services empire.',
-     verdict:'win',
+     story:'Written off as a dinosaur at $30. Satya Nadella bet the company on Azure in 2014. A masterclass in institutional reinvention.'},
+    {name:'Apple',ticker:'AAPL',desc:'Near-bankrupt in 1997. Transformed by iPod, iPhone, App Store, iPad and a services empire.',verdict:'win',
      data:{2000:95,2001:88,2002:80,2003:70,2004:55,2005:43,2006:35,2007:22,2008:17},
-     story:'In 2000: 3% PC market share and near-bankrupt. Then iPod, iPhone, App Store, iPad, AirPods, Apple Watch. AUD/USD tailwind adds to returns for post-2004 buyers as AUD is weaker today than at entry.'},
-    {name:'Nvidia',ticker:'NVDA',
-     desc:'American semiconductor company. Started with gaming GPUs. Became the essential hardware platform for the global AI revolution.',
-     verdict:'win',
+     story:'In 2000: 3% PC market share, near-bankrupt. Then iPod, iPhone, App Store, iPad, AirPods, Apple Watch. The rest is history.'},
+    {name:'Nvidia',ticker:'NVDA',desc:'Started with gaming GPUs. Became the essential hardware platform for the global AI revolution.',verdict:'win',
      data:{2000:105,2001:130,2002:145,2003:135,2004:115,2005:95,2006:75,2007:40,2008:28},
-     story:'Founded for gaming GPUs, Jensen Huang bet everything on CUDA in 2006. 2001–2002 buyers caught post-dot-com lows — higher AUD return than 2000 buyers despite shorter hold.'},
-  ]},
+     story:'Founded for gaming GPUs, Jensen Huang bet everything on CUDA in 2006 — turning Nvidia into the indispensable engine of AI.'},
+   ]},
 ];
 
-const ERA_LABELS={
-  2000:'DOT-COM PEAK',2001:'DOT-COM BUST',2002:'BEAR MARKET',
-  2003:'RECOVERY',2004:'RECOVERY',2005:'BULL RUN',
-  2006:'BULL RUN',2007:'PRE-GFC PEAK',2008:'GFC CRASH',
-  2009:'GFC TROUGH',2010:'POST-GFC RECOVERY',2011:'EUROZONE CRISIS',
-  2012:'QE RECOVERY',2013:'BULL MARKET',2014:'QUIET GROWTH',
-  2015:'COMMODITY CRASH',2016:'TRUMP RALLY',2017:'BULL MARKET',
-  2018:'TRADE WARS',2019:'RECORD HIGHS',2020:'COVID CRASH',
-  2021:'MEME STOCK MANIA',2022:'RATE HIKE SHOCK',
-  2023:'AI REVOLUTION',2024:'AI FRENZY',2025:'AI ERA',2026:'PRESENT'
-};
-const MILESTONES={
-  2000:'Dot-com bubble at peak — tech valuations defy gravity',
-  2001:'Dot-com crash · 9/11 shock · markets in freefall',
-  2002:'Corporate scandals: Enron, WorldCom collapse',
-  2003:'Iraq War · SARS outbreak · markets begin recovery',
-  2004:'Facebook founded · ASX hits record highs',
-  2005:'Hurricane Katrina · oil breaks $70/barrel',
-  2006:'Twitter launched · US housing bubble inflating',
-  2007:'iPhone launches · subprime cracks appear',
-  2008:'Lehman Brothers collapses — Global Financial Crisis',
-  2009:'Markets bottom · Bitcoin whitepaper published',
-  2010:'iPad launches · European sovereign debt crisis',
-  2011:'Eurozone crisis peaks · global uncertainty',
-  2012:'Fed launches QE3 · Facebook IPO',
-  2013:'ASX surges · Tesla takes off',
-  2014:'Satya Nadella takes Microsoft helm',
-  2015:'China slowdown · iron ore collapses · oil at $30',
-  2016:'Trump elected · Brexit vote shocks markets',
-  2017:'Bitcoin mania · ASX bull run',
-  2018:'US-China trade war · rates rising',
-  2019:'ASX all-time highs · late-cycle expansion',
-  2020:'COVID-19 — markets fall 35%, then rocket',
-  2021:'Meme stocks · crypto mania · supply chains break',
-  2022:'Inflation surge · RBA rate hikes · tech selloff',
-  2023:'ChatGPT launches the AI revolution',
-  2024:'Nvidia reaches $3 trillion market cap',
-  2025:'AI reshapes every industry and market',
-  2026:'Portfolio valued — 30 March 2026',
-};
+const ERA_LABELS={2000:'DOT-COM PEAK',2001:'DOT-COM BUST',2002:'BEAR MARKET',2003:'RECOVERY',2004:'RECOVERY',2005:'BULL RUN',2006:'BULL RUN',2007:'PRE-GFC PEAK',2008:'GFC CRASH',2009:'GFC TROUGH',2010:'POST-GFC RECOVERY',2011:'EUROZONE CRISIS',2012:'QE RECOVERY',2013:'BULL MARKET',2014:'QUIET GROWTH',2015:'COMMODITY CRASH',2016:'TRUMP RALLY',2017:'BULL MARKET',2018:'TRADE WARS',2019:'RECORD HIGHS',2020:'COVID CRASH',2021:'MEME STOCK MANIA',2022:'RATE HIKE SHOCK',2023:'AI REVOLUTION',2024:'AI FRENZY',2025:'AI ERA',2026:'PRESENT'};
+const MILESTONES={2000:'Dot-com bubble at peak — tech valuations defy gravity',2001:'Dot-com crash · 9/11 shock · markets in freefall',2002:'Corporate scandals: Enron, WorldCom collapse',2003:'Iraq War · SARS outbreak · markets begin recovery',2004:'Facebook founded · ASX hits record highs',2005:'Hurricane Katrina · oil breaks $70/barrel',2006:'Twitter launched · US housing bubble inflating',2007:'iPhone launches · subprime cracks appear',2008:'Lehman Brothers collapses — Global Financial Crisis',2009:'Markets bottom · Bitcoin whitepaper published',2010:'iPad launches · European sovereign debt crisis',2011:'Eurozone crisis peaks · global uncertainty',2012:'Fed launches QE3 · Facebook IPO',2013:'ASX surges · Tesla takes off',2014:'Satya Nadella takes Microsoft helm',2015:'China slowdown · iron ore collapses · oil at $30',2016:'Trump elected · Brexit vote shocks markets',2017:'Bitcoin mania · ASX bull run',2018:'US-China trade war · rates rising',2019:'ASX all-time highs · late-cycle expansion',2020:'COVID-19 — markets fall 35%, then rocket',2021:'Meme stocks · crypto mania · supply chains break',2022:'Inflation surge · RBA rate hikes · tech selloff',2023:'ChatGPT launches the AI revolution',2024:'Nvidia reaches $3 trillion market cap',2025:'AI reshapes every industry and market',2026:'Portfolio valued — 30 March 2026'};
 
 function horizonNote(y){
   const span=2026-y;
-  const fx={
-    2000:'AUD/USD ~0.55 — slight headwind for USD stocks; returns AUD-adjusted.',
-    2001:'AUD/USD ~0.52 — slight headwind for USD stocks; returns AUD-adjusted.',
-    2002:'AUD/USD ~0.54 — returns AUD-adjusted.',
-    2003:'AUD/USD ~0.65 vs 0.63 today — near-neutral currency effect.',
-    2004:'AUD/USD ~0.74 vs 0.63 today — ~17% currency tailwind on USD returns.',
-    2005:'AUD/USD ~0.77 vs 0.63 today — ~22% currency tailwind on USD returns.',
-    2006:'AUD/USD ~0.76 vs 0.63 today — ~21% currency tailwind on USD returns.',
-    2007:'AUD/USD ~0.88 vs 0.63 today — ~40% currency tailwind amplifies USD returns.',
-    2008:'AUD/USD ~0.85 vs 0.63 today — ~35% currency tailwind amplifies USD returns.',
-  }[y]||'';
+  const fx={2000:'AUD/USD ~0.55 — slight headwind for USD stocks; returns AUD-adjusted.',2001:'AUD/USD ~0.52 — slight headwind for USD stocks; returns AUD-adjusted.',2002:'AUD/USD ~0.54 — returns AUD-adjusted.',2003:'AUD/USD ~0.65 vs 0.63 today — near-neutral currency effect.',2004:'AUD/USD ~0.74 vs 0.63 today — ~17% currency tailwind on USD returns.',2005:'AUD/USD ~0.77 vs 0.63 today — ~22% currency tailwind on USD returns.',2006:'AUD/USD ~0.76 vs 0.63 today — ~21% currency tailwind on USD returns.',2007:'AUD/USD ~0.88 vs 0.63 today — ~40% currency tailwind amplifies USD returns.',2008:'AUD/USD ~0.85 vs 0.63 today — ~35% currency tailwind amplifies USD returns.'}[y]||'';
   return `<strong>Investing in ${y}</strong> — ${span} years of compounding to 30 March 2026. ${fx}`;
 }
 
-/* ══════════════════════════════
-   STATE
-══════════════════════════════ */
 const TOTAL=10000,STEP=500,MINV=500;
 let S={year:null,picks:{},alloc:{}};
 let chartInst=null,results=null;
 const LB_KEY='ttp_lb_v2';
 const NAV_ORDER=[1,'i0','i1','i2','i3','i4',3,4,5,6];
 
-/* ══════════════════════════════
-   NAV
-══════════════════════════════ */
 function goTo(id){
   const cur=document.querySelector('.screen.active');
   if(cur){cur.classList.add('exit-up');setTimeout(()=>cur.classList.remove('active','exit-up'),460);}
@@ -691,61 +562,33 @@ function goTo(id){
   },220);
 }
 
-/* ══════════════════════════════
-   S1
-══════════════════════════════ */
-function showYearSelect(){
-  document.getElementById('heroActions').style.display='none';
-  document.getElementById('yearSection').style.display='block';
-  buildYearGrid();
-}
-function resetHero(){
-  S.year=null;
-  document.getElementById('heroActions').style.display='flex';
-  document.getElementById('yearSection').style.display='none';
-  document.getElementById('eraBadge').classList.remove('vis');
-  document.getElementById('startBtn').disabled=true;
-  buildYearGrid();
-}
+function showYearSelect(){document.getElementById('heroActions').style.display='none';document.getElementById('yearSection').style.display='block';buildYearGrid();}
+function resetHero(){S.year=null;document.getElementById('heroActions').style.display='flex';document.getElementById('yearSection').style.display='none';document.getElementById('eraBadge').classList.remove('vis');document.getElementById('startBtn').disabled=true;buildYearGrid();}
 function buildYearGrid(){
   const g=document.getElementById('yearGrid');g.innerHTML='';
   for(let y=2000;y<=2008;y++){
-    const b=document.createElement('button');
-    b.className='yb'+(S.year===y?' on':'');
-    b.textContent=y;
-    b.addEventListener('click',()=>pickYear(y));
-    g.appendChild(b);
+    const b=document.createElement('button');b.className='yb'+(S.year===y?' on':'');b.textContent=y;
+    b.addEventListener('click',()=>pickYear(y));g.appendChild(b);
   }
 }
 function pickYear(y){
   S.year=y;
   document.querySelectorAll('.yb').forEach(b=>b.classList.toggle('on',+b.textContent===y));
-  const badge=document.getElementById('eraBadge');
-  badge.innerHTML=horizonNote(y);badge.classList.add('vis');
+  const badge=document.getElementById('eraBadge');badge.innerHTML=horizonNote(y);badge.classList.add('vis');
   document.getElementById('startBtn').disabled=false;
 }
 function startGame(){if(!S.year)return;buildIndScreens();goTo('i0');}
 
-/* ══════════════════════════════
-   S2
-══════════════════════════════ */
 function buildIndScreens(){
   const wrap=document.getElementById('indCont');wrap.innerHTML='';
   IND.forEach((ind,idx)=>{
-    const el=document.createElement('div');
-    el.className='screen ind-screen';el.id='si'+idx;
+    const el=document.createElement('div');el.className='screen ind-screen';el.id='si'+idx;
     let track='<div class="step-track">';
-    IND.forEach((_,di)=>{
-      if(di>0)track+=`<div class="st-edge ${di<=idx?'done':''}"></div>`;
-      track+=`<div class="st-node ${di<idx?'done':di===idx?'active':''}"></div>`;
-    });
+    IND.forEach((_,di)=>{if(di>0)track+=`<div class="st-edge ${di<=idx?'done':''}"></div>`;track+=`<div class="st-node ${di<idx?'done':di===idx?'active':''}"></div>`;});
     track+='</div>';
-    const yr=S.year;
-    let cards='';
+    const yr=S.year;let cards='';
     ind.stocks.forEach(st=>{
-      const mult=st.data[yr];
-      const isNA=(mult===null||mult===undefined);
-      const isOn=S.picks[ind.id]?.name===st.name;
+      const mult=st.data[yr],isNA=(mult===null||mult===undefined),isOn=S.picks[ind.id]?.name===st.name;
       const safeId='sc_'+idx+'_'+st.name.replace(/[^a-zA-Z0-9]/g,'_');
       cards+=`<div class="sc-card${isOn?' sc-on':''}${isNA?' sc-na':''}" id="${safeId}"
         onclick="${isNA?'':
@@ -754,28 +597,20 @@ function buildIndScreens(){
         <div class="sc-name">${st.name}</div>
         <div class="sc-desc">${st.desc}</div>
         <div class="sc-bottom">
-          ${isNA
-            ?'<span class="sc-na-label">Not listed</span>'
+          ${isNA?'<span class="sc-na-label">Not listed</span>'
             :`<span class="sc-sel-label">Selected</span>
-              <div class="sc-check-wrap">
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M2 5l2.5 2.5 3.5-4" stroke="#fff" stroke-width="1.5"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>`}
+              <div class="sc-check-wrap"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2.5 2.5 3.5-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg></div>`}
         </div>
       </div>`;
     });
     const isLast=idx===IND.length-1;
     el.innerHTML=`<div class="ind-wrap">
-      <div class="ind-topbar">
-        <span class="ind-meta">Finance 101 · Born ${yr}</span>${track}
-      </div>
+      <div class="ind-topbar"><span class="ind-meta">Finance 101 · Born ${yr}</span>${track}</div>
       <div class="ind-title-row">
         <span class="ind-kicker">Industry ${idx+1} of ${IND.length}</span>
-        <div class="ind-title">
-          <div class="ind-color-mark" style="background:${ind.color}"></div>${ind.name}
-        </div>
+        <div class="ind-title"><div class="ind-color-mark" style="background:${ind.color}"></div>${ind.name}</div>
         <div class="ind-note">${ind.note}</div>
       </div>
       <div class="stock-cards" id="scg_${idx}">${cards}</div>
@@ -790,9 +625,7 @@ function buildIndScreens(){
           onclick="${isLast?'goAlloc()':'nextInd('+(idx+1)+')'}"
           ${S.picks[ind.id]?'':'disabled'}>
           ${isLast?'Continue to Allocation':'Next Industry'}
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-            <path d="M5 3l14 9L5 21V3z" fill="currentColor"/>
-          </svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
         </button>
       </div>
     </div>`;
@@ -815,6 +648,7 @@ function pickStock(indIdx,stockName,cardEl){
 }
 function nextInd(idx){buildIndScreens();goTo('i'+idx);}
 function indBack(idx){if(idx===0){resetHero();goTo(1);}else{buildIndScreens();goTo('i'+(idx-1));}}
+
 function goAlloc(){
   const picks=Object.values(S.picks);
   const per=Math.floor(TOTAL/picks.length/STEP)*STEP;
@@ -825,29 +659,92 @@ function goAlloc(){
   buildAllocTable();goTo(3);
 }
 
-/* ══════════════════════════════
-   S3
-══════════════════════════════ */
+/* ══════════════════════════════════════
+   ALLOC TABLE — with inline Change picker
+══════════════════════════════════════ */
 function buildAllocTable(){
   const c=document.getElementById('allocTable');c.innerHTML='';
-  IND.forEach(ind=>{
+  IND.forEach((ind,indIdx)=>{
     const st=S.picks[ind.id];if(!st)return;
     const amt=S.alloc[st.name]||0,tot=sumAlloc();
-    const row=document.createElement('div');row.className='alloc-row';
+
+    const item=document.createElement('div');item.className='alloc-item';
+
+    // ── Main row ──
+    const mainRow=document.createElement('div');mainRow.className='alloc-main-row';
+
+    // Colour bar
+    const bar=document.createElement('div');bar.className='ar-bar';bar.style.background=ind.color;
+
+    // Left: industry + stock name
+    const left=document.createElement('div');left.className='ar-left';
+    left.innerHTML=`<div class="ar-ind-label">${ind.name}</div>
+      <div class="ar-name">${st.name}</div>
+      <div class="ar-ticker">${st.ticker}</div>`;
+
+    // Right: change btn + amount controls
+    const right=document.createElement('div');right.className='ar-right';
+
+    // Change button
+    const changeBtn=document.createElement('button');
+    changeBtn.className='ar-change-btn';
+    changeBtn.textContent='Change';
+    changeBtn.setAttribute('data-ind',indIdx);
+
+    // Amount controls
     const dec=document.createElement('button');dec.className='ar-btn';dec.textContent='−';dec.disabled=amt<=MINV;
-    const inc=document.createElement('button');inc.className='ar-btn';inc.textContent='+';inc.disabled=tot+STEP>TOTAL;
     const amtEl=document.createElement('div');amtEl.className='ar-amt';
     amtEl.innerHTML=`$${(amt/1000).toFixed(1)}k<small>${((amt/TOTAL)*100).toFixed(0)}%</small>`;
+    const inc=document.createElement('button');inc.className='ar-btn';inc.textContent='+';inc.disabled=tot+STEP>TOTAL;
     const ctrl=document.createElement('div');ctrl.className='ar-ctrl';ctrl.append(dec,amtEl,inc);
-    row.innerHTML=`<div class="ar-bar" style="background:${ind.color}"></div>
-      <div class="ar-info"><div class="ar-name">${st.name}</div><div class="ar-ticker">${st.ticker}</div></div>`;
-    row.appendChild(ctrl);
+
+    right.append(changeBtn,ctrl);
+    mainRow.append(bar,left,right);
+
+    // ── Inline picker ──
+    const picker=document.createElement('div');picker.className='alloc-picker';
+    ind.stocks.forEach(opt=>{
+      const mult=opt.data[S.year];
+      const isNA=(mult===null||mult===undefined);
+      const isSelected=opt.name===st.name;
+      const optEl=document.createElement('div');
+      optEl.className='picker-opt'+(isSelected?' picker-selected':'')+(isNA?' picker-na':'');
+      optEl.innerHTML=`<span class="picker-opt-name">${opt.name}</span>
+        <span class="picker-opt-ticker">${opt.ticker}</span>
+        ${isNA?'<span style="font-family:var(--fn-mono);font-size:9px;color:var(--t4)">Not listed</span>':''}`;
+      if(!isNA){
+        optEl.addEventListener('click',()=>{
+          // Swap pick
+          const prev=S.picks[ind.id];
+          if(prev&&prev.name!==opt.name)delete S.alloc[prev.name];
+          S.picks[ind.id]=opt;
+          if(!S.alloc[opt.name])S.alloc[opt.name]=S.alloc[st.name]||2000;
+          if(prev&&prev.name!==opt.name)delete S.alloc[prev.name];
+          // Close picker and rebuild
+          buildAllocTable();
+        });
+      }
+      picker.appendChild(optEl);
+    });
+
+    // Toggle picker open/close
+    changeBtn.addEventListener('click',()=>{
+      const isOpen=picker.classList.contains('open');
+      // Close all other pickers first
+      document.querySelectorAll('.alloc-picker.open').forEach(p=>p.classList.remove('open'));
+      document.querySelectorAll('.ar-change-btn.open').forEach(b=>b.classList.remove('open'));
+      if(!isOpen){picker.classList.add('open');changeBtn.classList.add('open');}
+    });
+
+    item.append(mainRow,picker);
+    c.appendChild(item);
+
     dec.addEventListener('click',()=>nudge(st.name,-1));
     inc.addEventListener('click',()=>nudge(st.name,1));
-    c.appendChild(row);
   });
   refreshBudget();
 }
+
 function nudge(name,dir){
   const cur=S.alloc[name]||0,nv=cur+dir*STEP,nt=sumAlloc()-cur+nv;
   if(nv<MINV||nt>TOTAL)return;
@@ -858,8 +755,7 @@ function refreshBudget(){
   const tot=sumAlloc(),rem=TOTAL-tot,pct=Math.min(tot/TOTAL*100,100);
   document.getElementById('bsTotal').textContent=tot.toLocaleString();
   const bar=document.getElementById('bbar');
-  bar.style.width=pct+'%';
-  bar.className='bbar'+(rem===0?' done':tot>TOTAL?' over':'');
+  bar.style.width=pct+'%';bar.className='bbar'+(rem===0?' done':tot>TOTAL?' over':'');
   const remEl=document.getElementById('bsRem');
   if(rem===0){remEl.textContent='✓ Fully allocated';remEl.className='bs-rem ok';}
   else if(rem>0){remEl.textContent='$'+rem.toLocaleString()+' remaining';remEl.className='bs-rem warn';}
@@ -869,9 +765,6 @@ function refreshBudget(){
   document.getElementById('allocErr').textContent=ok?'':`Allocate exactly $${TOTAL.toLocaleString()} to continue`;
 }
 
-/* ══════════════════════════════
-   S4
-══════════════════════════════ */
 function goTimeline(){
   if(sumAlloc()!==TOTAL)return;
   document.getElementById('tlFrom').textContent=S.year;
@@ -891,109 +784,63 @@ function runTimeline(){
   function tick(){
     yrEl.style.opacity='0';
     setTimeout(()=>{
-      cur++;const p=(cur-start)/total;
-      fillEl.style.width=(p*100)+'%';
-      if(cur<end){
-        yrEl.textContent=cur;stEl.textContent='Travelling';
-        eraEl.textContent=ERA_LABELS[cur]||'';msEl.textContent=MILESTONES[cur]||'';
-      }else{
-        yrEl.textContent='2026';stEl.textContent='Arrived';
-        eraEl.textContent='PRESENT DAY';msEl.textContent='Portfolio valued — 30 March 2026';
-        fillEl.style.width='100%';
-      }
+      cur++;const p=(cur-start)/total;fillEl.style.width=(p*100)+'%';
+      if(cur<end){yrEl.textContent=cur;stEl.textContent='Travelling';eraEl.textContent=ERA_LABELS[cur]||'';msEl.textContent=MILESTONES[cur]||'';}
+      else{yrEl.textContent='2026';stEl.textContent='Arrived';eraEl.textContent='PRESENT DAY';msEl.textContent='Portfolio valued — 30 March 2026';fillEl.style.width='100%';}
       yrEl.style.opacity='1';
-      if(cur<end){
-        const delay=p<0.6?60:p<0.8?88:p<0.95?140:200;setTimeout(tick,delay);
-      }else{
-        setTimeout(()=>{
-          const fl=document.getElementById('flashEl');
-          fl.classList.add('on');setTimeout(()=>fl.classList.remove('on'),320);
-          document.getElementById('tlCta').classList.add('vis');
-        },700);
-      }
+      if(cur<end){const delay=p<0.6?60:p<0.8?88:p<0.95?140:200;setTimeout(tick,delay);}
+      else{setTimeout(()=>{const fl=document.getElementById('flashEl');fl.classList.add('on');setTimeout(()=>fl.classList.remove('on'),320);document.getElementById('tlCta').classList.add('vis');},700);}
     },42);
   }
   setTimeout(tick,380);
 }
 
-/* ══════════════════════════════
-   CALC
-══════════════════════════════ */
 function calcResults(){
   let final=0;const rows=[];
   IND.forEach(ind=>{
     const st=S.picks[ind.id];if(!st)return;
     const alloc=S.alloc[st.name]||0;
-    const mult=st.data[S.year];
-    const safeMult=(mult!=null)?mult:1;
-    const val=Math.round(alloc*safeMult);
-    final+=val;
-    // Alternatives: other stocks in same industry that were listed in S.year
+    const mult=st.data[S.year];const safeMult=(mult!=null)?mult:1;
+    const val=Math.round(alloc*safeMult);final+=val;
     const alts=ind.stocks.filter(s=>s.name!==st.name&&s.data[S.year]!=null);
     const bestAlt=alts.length?alts.reduce((b,s)=>s.data[S.year]>b.data[S.year]?s:b,alts[0]):null;
     const worstAlt=alts.length?alts.reduce((b,s)=>s.data[S.year]<b.data[S.year]?s:b,alts[0]):null;
     rows.push({st,ind,alloc,mult:safeMult,val,bestAlt,worstAlt});
   });
-  const bestPoss=rows.reduce((t,r)=>{
-    const listed=IND.find(i=>i.id===r.ind.id).stocks.filter(s=>s.data[S.year]!=null);
-    return t+Math.round(r.alloc*Math.max(...listed.map(s=>s.data[S.year])));
-  },0);
-  const worstPoss=rows.reduce((t,r)=>{
-    const listed=IND.find(i=>i.id===r.ind.id).stocks.filter(s=>s.data[S.year]!=null);
-    return t+Math.round(r.alloc*Math.min(...listed.map(s=>s.data[S.year])));
-  },0);
+  const bestPoss=rows.reduce((t,r)=>{const listed=IND.find(i=>i.id===r.ind.id).stocks.filter(s=>s.data[S.year]!=null);return t+Math.round(r.alloc*Math.max(...listed.map(s=>s.data[S.year])));},0);
+  const worstPoss=rows.reduce((t,r)=>{const listed=IND.find(i=>i.id===r.ind.id).stocks.filter(s=>s.data[S.year]!=null);return t+Math.round(r.alloc*Math.min(...listed.map(s=>s.data[S.year])));},0);
   results={rows,final,year:S.year,span:2026-S.year,bestPoss,worstPoss};
 }
 
-/* ══════════════════════════════
-   S5 — RENDER
-══════════════════════════════ */
-function showResults(){
-  calcResults();
-  saveLb(results.final,S.year); // save BEFORE render
-  renderResults();
-  goTo(5);
-}
+function showResults(){calcResults();saveLb(results.final,S.year);renderResults();goTo(5);}
 
 function renderResults(){
   const{rows,final,year,span,bestPoss,worstPoss}=results;
   const pct=(((final-TOTAL)/TOTAL)*100).toFixed(1);
   const mult=(final/TOTAL).toFixed(1);
-
   let headline;
-  if(final>=TOTAL*15)       headline='<strong>Exceptional.</strong> ×'+mult+' over '+span+' years — you beat most professional fund managers.';
-  else if(final>=TOTAL*7)   headline='<strong>Strong.</strong> ×'+mult+' over '+span+' years — well above the long-run market average.';
-  else if(final>=TOTAL*3)   headline='<strong>Solid.</strong> ×'+mult+' over '+span+' years — above inflation, below your best possible outcome.';
-  else if(final>=TOTAL*1.5) headline='<strong>Modest.</strong> ×'+mult+' over '+span+' years — you outpaced a savings account, but not by much.';
-  else                      headline='<strong>Challenging.</strong> Your portfolio barely kept pace with inflation over '+span+' years.';
+  if(final>=TOTAL*15)headline='<strong>Exceptional.</strong> ×'+mult+' over '+span+' years — you beat most professional fund managers.';
+  else if(final>=TOTAL*7)headline='<strong>Strong.</strong> ×'+mult+' over '+span+' years — well above the long-run market average.';
+  else if(final>=TOTAL*3)headline='<strong>Solid.</strong> ×'+mult+' over '+span+' years — above inflation, below your best possible outcome.';
+  else if(final>=TOTAL*1.5)headline='<strong>Modest.</strong> ×'+mult+' over '+span+' years — you outpaced a savings account, but not by much.';
+  else headline='<strong>Challenging.</strong> Your portfolio barely kept pace with inflation over '+span+' years.';
 
-  // Breakdown
   let bdHtml='';
   rows.forEach(({st,ind,alloc,mult,val},i)=>{
     const mc=mult>=8?'hi':mult>=3?'md':'lo';
     bdHtml+=`<div class="bd-row" id="bdr${i}">
       <div class="bd-bar" style="background:${ind.color}"></div>
-      <div class="bd-info">
-        <div class="bd-name">${st.name}</div>
-        <div class="bd-sub">${ind.name} · $${alloc.toLocaleString()}</div>
-      </div>
-      <div class="bd-nums">
-        <span class="bd-val">$${val.toLocaleString()}</span>
-        <span class="bd-mult ${mc}">×${mult}</span>
-      </div>
+      <div class="bd-info"><div class="bd-name">${st.name}</div><div class="bd-sub">${ind.name} · $${alloc.toLocaleString()}</div></div>
+      <div class="bd-nums"><span class="bd-val">$${val.toLocaleString()}</span><span class="bd-mult ${mc}">×${mult}</span></div>
     </div>`;
   });
 
-  // Swap analysis
   let totalGain=0;
   const suggestions=rows.map(r=>{
     if(!r.bestAlt)return null;
-    const altMult=r.bestAlt.data[year];
-    const altVal=Math.round(r.alloc*altMult);
-    const gain=altVal-r.val;
+    const altMult=r.bestAlt.data[year],altVal=Math.round(r.alloc*altMult),gain=altVal-r.val;
     if(gain>0)totalGain+=gain;
-    return{ind:r.ind,yourSt:r.st,yourVal:r.val,yourMult:r.mult,
-           bestAlt:r.bestAlt,bestAltVal:altVal,bestAltMult:altMult,gain,alloc:r.alloc};
+    return{ind:r.ind,yourSt:r.st,yourVal:r.val,yourMult:r.mult,bestAlt:r.bestAlt,bestAltVal:altVal,bestAltMult:altMult,gain,alloc:r.alloc};
   }).filter(Boolean);
 
   let improveHtml='';
@@ -1003,157 +850,72 @@ function renderResults(){
       <div class="ir-ind" style="background:${s.ind.color}"></div>
       <div class="ir-info">
         <div class="ir-ind-name">${s.ind.name}</div>
-        <div class="ir-swap">
-          ${hasGain
-            ?`<span class="kept">${s.yourSt.name}</span><span class="arrow">→</span><span class="better">${s.bestAlt.name}</span>`
-            :`<span class="kept">${s.yourSt.name}</span><span style="font-size:11px;color:var(--ok);margin-left:.5rem">✓ Best pick</span>`}
-        </div>
-        <div class="ir-reason">
-          ${hasGain
-            ?`${s.bestAlt.name} returned ×${s.bestAltMult} vs your ×${s.yourMult} — $${s.bestAltVal.toLocaleString()} vs $${s.yourVal.toLocaleString()} on $${s.alloc.toLocaleString()} invested.`
-            :`${s.yourSt.name} was the strongest available pick in ${s.ind.name} for ${year}.`}
-        </div>
+        <div class="ir-swap">${hasGain?`<span class="kept">${s.yourSt.name}</span><span class="arrow">→</span><span class="better">${s.bestAlt.name}</span>`:`<span class="kept">${s.yourSt.name}</span><span style="font-size:11px;color:var(--ok);margin-left:.5rem">✓ Best pick</span>`}</div>
+        <div class="ir-reason">${hasGain?`${s.bestAlt.name} returned ×${s.bestAltMult} vs your ×${s.yourMult} — $${s.bestAltVal.toLocaleString()} vs $${s.yourVal.toLocaleString()} on $${s.alloc.toLocaleString()} invested.`:`${s.yourSt.name} was the strongest available pick in ${s.ind.name} for ${year}.`}</div>
       </div>
-      <div class="ir-nums">
-        ${hasGain
-          ?`<span class="ir-gain pos">+$${s.gain.toLocaleString()}</span><span class="ir-gain-label">if swapped</span>`
-          :`<span class="ir-gain zero">Optimal</span><span class="ir-gain-label">no better alt</span>`}
-      </div>
+      <div class="ir-nums">${hasGain?`<span class="ir-gain pos">+$${s.gain.toLocaleString()}</span><span class="ir-gain-label">if swapped</span>`:`<span class="ir-gain zero">Optimal</span><span class="ir-gain-label">no better alt</span>`}</div>
     </div>`;
   });
 
-  // Stories
   let storiesHtml='';
   rows.forEach(({st,ind,alloc,val,mult})=>{
     const mc=mult>=20?'var(--ok)':mult>=8?'var(--blue)':mult>=3?'var(--warn)':'var(--err)';
     storiesHtml+=`<div class="story-card">
-      <div class="story-head">
-        <div class="story-bar" style="background:${ind.color}"></div>
-        <span class="story-name">${st.name}</span>
-        <span class="story-tk">${st.ticker}</span>
-        <span class="story-mult" style="color:${mc}">×${mult}</span>
-      </div>
-      <div class="story-body">
-        <strong>$${alloc.toLocaleString()} → $${val.toLocaleString()} AUD</strong><br>${st.story}
-        <div><span class="verdict ${st.verdict}">${
-          st.verdict==='win'?'Counter-intuitive winner':
-          st.verdict==='loss'?'Value trap':'Steady compounder'
-        }</span></div>
-      </div>
+      <div class="story-head"><div class="story-bar" style="background:${ind.color}"></div><span class="story-name">${st.name}</span><span class="story-tk">${st.ticker}</span><span class="story-mult" style="color:${mc}">×${mult}</span></div>
+      <div class="story-body"><strong>$${alloc.toLocaleString()} → $${val.toLocaleString()} AUD</strong><br>${st.story}<div><span class="verdict ${st.verdict}">${st.verdict==='win'?'Counter-intuitive winner':st.verdict==='loss'?'Value trap':'Steady compounder'}</span></div></div>
     </div>`;
   });
 
-  // Analysis
   const winners=rows.filter(r=>r.st.verdict==='win');
   let comp;
-  if(winners.length>=4)      comp='You identified '+winners.length+' counter-intuitive winners — rare conviction.';
-  else if(winners.length===3) comp='Three counter-intuitive winners anchored your returns. Two conventional picks cost compounding power.';
-  else if(winners.length===2) comp=winners.map(r=>r.st.name).join(' and ')+' were your genuine surprises. Three conventional picks kept you respectable but not remarkable.';
-  else if(winners.length===1) comp='Only '+(winners[0]?.st.name||'one pick')+' broke from consensus. The other four tracked conventional wisdom.';
-  else                        comp='All five picks were consensus choices. What is expected is already priced in.';
+  if(winners.length>=4)comp='You identified '+winners.length+' counter-intuitive winners — rare conviction.';
+  else if(winners.length===3)comp='Three counter-intuitive winners anchored your returns. Two conventional picks cost compounding power.';
+  else if(winners.length===2)comp=winners.map(r=>r.st.name).join(' and ')+' were your genuine surprises. Three conventional picks kept you respectable but not remarkable.';
+  else if(winners.length===1)comp='Only '+(winners[0]?.st.name||'one pick')+' broke from consensus. The other four tracked conventional wisdom.';
+  else comp='All five picks were consensus choices. What is expected is already priced in.';
 
   const bestRow=rows.reduce((b,r)=>r.mult>b.mult?r:b);
   const bestLine='Standout: <strong>'+bestRow.st.name+' ×'+bestRow.mult+'</strong> — $'+bestRow.alloc.toLocaleString()+' became $'+bestRow.val.toLocaleString()+'.';
 
   const tks=[];
-  const fxMap={
-    2000:'AUD/USD 0.55 in 2000 — slight headwind for USD assets; returns AUD-adjusted.',
-    2001:'AUD/USD 0.52 in 2001 — slight headwind for USD assets; returns AUD-adjusted.',
-    2002:'AUD/USD 0.54 in 2002 — returns AUD-adjusted.',
-    2003:'AUD/USD 0.65 in 2003 vs 0.63 today — near-neutral currency effect.',
-    2004:'AUD/USD 0.74 in 2004 vs 0.63 today — ~17% currency tailwind on USD returns.',
-    2005:'AUD/USD 0.77 in 2005 vs 0.63 today — ~22% currency tailwind on USD returns.',
-    2006:'AUD/USD 0.76 in 2006 vs 0.63 today — ~21% currency tailwind on USD returns.',
-    2007:'AUD/USD 0.88 in 2007 vs 0.63 today — ~40% currency tailwind amplifies all USD returns.',
-    2008:'AUD/USD 0.85 in 2008 vs 0.63 today — ~35% currency tailwind amplifies all USD returns.',
-  };
-  if(rows.some(r=>r.ind.id==='tech')) tks.push('<strong>Currency ('+year+'):</strong> '+fxMap[year]);
+  const fxMap={2000:'AUD/USD 0.55 in 2000 — slight headwind for USD assets; returns AUD-adjusted.',2001:'AUD/USD 0.52 in 2001 — slight headwind for USD assets; returns AUD-adjusted.',2002:'AUD/USD 0.54 in 2002 — returns AUD-adjusted.',2003:'AUD/USD 0.65 in 2003 vs 0.63 today — near-neutral currency effect.',2004:'AUD/USD 0.74 in 2004 vs 0.63 today — ~17% currency tailwind on USD returns.',2005:'AUD/USD 0.77 in 2005 vs 0.63 today — ~22% currency tailwind on USD returns.',2006:'AUD/USD 0.76 in 2006 vs 0.63 today — ~21% currency tailwind on USD returns.',2007:'AUD/USD 0.88 in 2007 vs 0.63 today — ~40% currency tailwind amplifies all USD returns.',2008:'AUD/USD 0.85 in 2008 vs 0.63 today — ~35% currency tailwind amplifies all USD returns.'};
+  if(rows.some(r=>r.ind.id==='tech'))tks.push('<strong>Currency ('+year+'):</strong> '+fxMap[year]);
   const mp=rows.find(r=>r.ind.id==='mining');
-  if(mp?.st.ticker==='FMG.AX') tks.push('<strong>Fortescue:</strong> Contrarian conviction against expert consensus. Every analyst said Pilbara was locked up. They were wrong.');
-  else if(mp) tks.push('<strong>Mining:</strong> BHP and Rio are reliable franked-dividend compounders — rarely counter-intuitive, but rarely disappointing over a full cycle.');
-  if(rows.some(r=>r.st.ticker==='ANZ.AX')) tks.push('<strong>ANZ:</strong> Vision without execution is expensive. Asian expansion looked bold in 2010, was abandoned by 2017.');
-  if(rows.some(r=>r.st.ticker==='CSL.AX'||r.st.ticker==='COH.AX')) tks.push('<strong>Australian healthcare:</strong> CSL and Cochlear built global monopolies from niche specialisations. Ageing demographics remain their tailwind.');
+  if(mp?.st.ticker==='FMG.AX')tks.push('<strong>Fortescue:</strong> Contrarian conviction against expert consensus. Every analyst said Pilbara was locked up. They were wrong.');
+  else if(mp)tks.push('<strong>Mining:</strong> BHP and Rio are reliable franked-dividend compounders — rarely counter-intuitive, but rarely disappointing over a full cycle.');
+  if(rows.some(r=>r.st.ticker==='ANZ.AX'))tks.push('<strong>ANZ:</strong> Vision without execution is expensive. Asian expansion looked bold in 2010, was abandoned by 2017.');
+  if(rows.some(r=>r.st.ticker==='CSL.AX'||r.st.ticker==='COH.AX'))tks.push('<strong>Australian healthcare:</strong> CSL and Cochlear built global monopolies from niche specialisations. Ageing demographics remain their tailwind.');
   tks.push('<strong>Best possible ('+year+'):</strong> $'+bestPoss.toLocaleString()+' — you captured <strong>'+((final/bestPoss)*100).toFixed(0)+'%</strong> of maximum return.');
   tks.push('<strong>Worst possible ('+year+'):</strong> $'+worstPoss.toLocaleString()+' — your result '+(final>=worstPoss?'exceeded':'was near')+' the worst-case scenario.');
 
-  // Leaderboard — read AFTER save
   const lb=getLb();
   let lbHtml='';
-  if(!lb.length){
-    lbHtml='<div class="lb-empty">Scores will appear here as the class plays.</div>';
-  }else{
-    lb.forEach((s,i)=>{
-      lbHtml+=`<div class="lb-row${i===0?' top':''}">
-        <span class="lb-rank">${i===0?'★':i+1}</span>
-        <span class="lb-val">$${s.score.toLocaleString()}</span>
-        <span class="lb-yr">Born ${s.yr}</span>
-      </div>`;
-    });
-  }
+  if(!lb.length){lbHtml='<div class="lb-empty">Scores will appear here as the class plays.</div>';}
+  else{lb.forEach((s,i)=>{lbHtml+=`<div class="lb-row${i===0?' top':''}"><span class="lb-rank">${i===0?'★':i+1}</span><span class="lb-val">$${s.score.toLocaleString()}</span><span class="lb-yr">Born ${s.yr}</span></div>`;});}
 
   document.getElementById('rpage').innerHTML=`
-    <div style="margin-bottom:1.25rem">
-      <span style="font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);display:block;line-height:1.8">
-        Finance 101 · Time Travel Portfolio · Born ${year} · ${year} → 30 March 2026 · ${span}-year hold
-      </span>
-    </div>
-
+    <div style="margin-bottom:1.25rem"><span style="font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);display:block;line-height:1.8">Finance 101 · Time Travel Portfolio · Born ${year} · ${year} → 30 March 2026 · ${span}-year hold</span></div>
     <div class="stat-bar">
-      <div class="sb-cell">
-        <div class="sb-lbl">Final Value</div>
-        <div class="sb-val" id="sbFinal">$10,000</div>
-        <div class="sb-sub">${span}-year hold</div>
-      </div>
-      <div class="sb-cell">
-        <div class="sb-lbl">Total Return</div>
-        <div class="sb-val ${+pct>=0?'pos':'neg'}">${+pct>=0?'+':''}${pct}%</div>
-        <div class="sb-sub">on $10,000</div>
-      </div>
-      <div class="sb-cell">
-        <div class="sb-lbl">Multiplier</div>
-        <div class="sb-val">×${mult}</div>
-        <div class="sb-sub">of capital</div>
-      </div>
-      <div class="sb-cell">
-        <div class="sb-lbl">Best Possible</div>
-        <div class="sb-val" style="font-size:clamp(.9rem,2.8vw,1.1rem)">$${bestPoss.toLocaleString()}</div>
-        <div class="sb-sub">${((final/bestPoss)*100).toFixed(0)}% of max</div>
-      </div>
+      <div class="sb-cell"><div class="sb-lbl">Final Value</div><div class="sb-val" id="sbFinal">$10,000</div><div class="sb-sub">${span}-year hold</div></div>
+      <div class="sb-cell"><div class="sb-lbl">Total Return</div><div class="sb-val ${+pct>=0?'pos':'neg'}">${+pct>=0?'+':''}${pct}%</div><div class="sb-sub">on $10,000</div></div>
+      <div class="sb-cell"><div class="sb-lbl">Multiplier</div><div class="sb-val">×${mult}</div><div class="sb-sub">of capital</div></div>
+      <div class="sb-cell"><div class="sb-lbl">Best Possible</div><div class="sb-val" style="font-size:clamp(.9rem,2.8vw,1.1rem)">$${bestPoss.toLocaleString()}</div><div class="sb-sub">${((final/bestPoss)*100).toFixed(0)}% of max</div></div>
     </div>
     <div class="r-headline"><div class="r-headline-text">${headline}</div></div>
-
     <div class="r-cols">
-      <div class="r-panel">
-        <div class="ph"><span class="ph-title">Your Portfolio Breakdown</span></div>
-        <div id="bdRows">${bdHtml}</div>
-      </div>
-      <div class="r-panel">
-        <div class="ph"><span class="ph-title">Returns by Position</span></div>
-        <div class="chart-pad"><canvas id="rChart"></canvas></div>
-      </div>
+      <div class="r-panel"><div class="ph"><span class="ph-title">Your Portfolio Breakdown</span></div><div id="bdRows">${bdHtml}</div></div>
+      <div class="r-panel"><div class="ph"><span class="ph-title">Returns by Position</span></div><div class="chart-pad"><canvas id="rChart"></canvas></div></div>
     </div>
-
     <div class="improve-section">
-      <div class="improve-head">
-        <span class="improve-title">Could You Have Done Better? — Swap Analysis</span>
-        <span class="improve-delta">${totalGain>0?'+$'+totalGain.toLocaleString()+' available':'Optimal portfolio'}</span>
-      </div>
+      <div class="improve-head"><span class="improve-title">Could You Have Done Better? — Swap Analysis</span><span class="improve-delta">${totalGain>0?'+$'+totalGain.toLocaleString()+' available':'Optimal portfolio'}</span></div>
       <div class="improve-body">${improveHtml}</div>
     </div>
-
     <div class="stories-label">What happened to your picks</div>
     <div class="stories-grid">${storiesHtml}</div>
-
     <div class="b-cols">
-      <div class="lb-wrap">
-        <div class="ph"><span class="ph-title">Class Leaderboard</span></div>
-        <div id="lbRows">${lbHtml}</div>
-        <button class="lb-clear" onclick="clearLb()">Clear scores</button>
-      </div>
+      <div class="lb-wrap"><div class="ph"><span class="ph-title">Class Leaderboard</span></div><div id="lbRows">${lbHtml}</div><button class="lb-clear" onclick="clearLb()">Clear scores</button></div>
       <div class="analysis-wrap">
-        <div style="font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.875rem">
-          Portfolio Analysis · Born ${year}
-        </div>
+        <div style="font-family:var(--fn-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:.875rem">Portfolio Analysis · Born ${year}</div>
         <div class="an-title">${headline.replace(/<\/?strong>/g,'')}</div>
         <div class="an-body">${comp}</div>
         <div class="an-body">${bestLine}</div>
@@ -1161,16 +923,11 @@ function renderResults(){
         ${tks.map(t=>`<div class="kt-item">${t}</div>`).join('')}
       </div>
     </div>
-
     <div class="r-footer">
-      <button class="btn btn-primary btn-lg" onclick="goTakeaways()">
-        Key Takeaways
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg>
-      </button>
+      <button class="btn btn-primary btn-lg" onclick="goTakeaways()">Key Takeaways <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9L5 21V3z" fill="currentColor"/></svg></button>
       <button class="btn" onclick="resetAll()">Play Again</button>
     </div>`;
 
-  // Animate
   setTimeout(()=>{
     counterEl(document.getElementById('sbFinal'),0,final,1200);
     rows.forEach((_,i)=>setTimeout(()=>document.getElementById('bdr'+i)?.classList.add('in'),130*i+350));
@@ -1183,54 +940,19 @@ function renderResults(){
 function buildChart(rows){
   if(chartInst)chartInst.destroy();
   const ctx=document.getElementById('rChart');if(!ctx)return;
-  // Responsive height: shorter on mobile
   const isMobile=window.innerWidth<600;
   ctx.height=isMobile?180:220;
   chartInst=new Chart(ctx,{
     type:'bar',
-    data:{
-      labels:rows.map(r=>r.st.name),
-      datasets:[{
-        data:rows.map(r=>r.val),
-        backgroundColor:rows.map(r=>r.ind.color+'25'),
-        borderColor:rows.map(r=>r.ind.color),
-        borderWidth:1.5,
-      }]
-    },
-    options:{
-      indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      animation:{duration:700,easing:'easeOutQuart'},
-      scales:{
-        x:{
-          grid:{color:'rgba(0,0,0,.05)'},
-          border:{color:'var(--border)'},
-          ticks:{color:'#94A3B8',font:{family:'IBM Plex Mono',size:isMobile?9:10},
-            callback:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)}
-        },
-        y:{
-          grid:{display:false},
-          border:{color:'var(--border)'},
-          ticks:{color:'#2D4057',font:{family:'IBM Plex Sans Condensed',size:isMobile?11:13,weight:'700'}}
-        }
-      },
-      plugins:{
-        legend:{display:false},
-        datalabels:{
-          anchor:'end',align:'end',offset:3,
-          color:'#0F1C2E',
-          font:{family:'IBM Plex Mono',size:isMobile?9:11,weight:'600'},
-          formatter:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)
-        }
-      },
-      layout:{padding:{right:isMobile?48:64}}
-    },
+    data:{labels:rows.map(r=>r.st.name),datasets:[{data:rows.map(r=>r.val),backgroundColor:rows.map(r=>r.ind.color+'25'),borderColor:rows.map(r=>r.ind.color),borderWidth:1.5}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},
+      scales:{x:{grid:{color:'rgba(0,0,0,.05)'},border:{color:'var(--border)'},ticks:{color:'#94A3B8',font:{family:'IBM Plex Mono',size:isMobile?9:10},callback:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)}},y:{grid:{display:false},border:{color:'var(--border)'},ticks:{color:'#2D4057',font:{family:'IBM Plex Sans Condensed',size:isMobile?11:13,weight:'700'}}}},
+      plugins:{legend:{display:false},datalabels:{anchor:'end',align:'end',offset:3,color:'#0F1C2E',font:{family:'IBM Plex Mono',size:isMobile?9:11,weight:'600'},formatter:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)}},
+      layout:{padding:{right:isMobile?48:64}}},
     plugins:[ChartDataLabels]
   });
 }
 
-/* ══════════════════════════════
-   S6
-══════════════════════════════ */
 function goTakeaways(){buildTakeaways();goTo(6);}
 function buildTakeaways(){
   if(!results)return;
@@ -1238,80 +960,36 @@ function buildTakeaways(){
   const mult=(final/TOTAL).toFixed(1);
   const bestRow=rows.reduce((b,r)=>r.mult>b.mult?r:b);
   const worstRow=rows.reduce((b,r)=>r.mult<b.mult?r:b);
-  document.getElementById('tkSub').textContent=
-    '$10,000 invested in '+year+' became $'+final.toLocaleString()+' by 30 March 2026 — a ×'+mult+' return over '+span+' years.';
-  const fxBody={
-    2000:'AUD/USD was 0.55 in 2000 — a headwind for USD assets as the AUD strengthened through the commodity boom.',
-    2001:'AUD/USD was 0.52 in 2001 — a headwind initially, but the AUD then strengthened through the following decade.',
-    2002:'AUD/USD was 0.54 in 2002. The commodity cycle then drove AUD sharply higher.',
-    2003:'AUD/USD was 0.65 in 2003 vs ~0.63 today — near-neutral currency effect on USD returns.',
-    2004:'AUD/USD was 0.74 in 2004 vs ~0.63 today. ~17% extra return on USD stocks from currency alone.',
-    2005:'AUD/USD was 0.77 in 2005 vs ~0.63 today. A <strong>~22% currency tailwind</strong> on top of USD stock returns.',
-    2006:'AUD/USD was 0.76 in 2006 vs ~0.63 today. A <strong>~21% currency tailwind</strong> amplifies all USD returns.',
-    2007:'AUD/USD was 0.88 in 2007 vs ~0.63 today. A <strong>~40% tailwind</strong> — currency can be as important as stock selection.',
-    2008:'AUD/USD was 0.85 in 2008 vs ~0.63 today. A <strong>~35% tailwind</strong> — every USD gain converts to AUD at a premium.',
-  }[year]||'';
+  document.getElementById('tkSub').textContent='$10,000 invested in '+year+' became $'+final.toLocaleString()+' by 30 March 2026 — a ×'+mult+' return over '+span+' years.';
+  const fxBody={2000:'AUD/USD was 0.55 in 2000 — a headwind for USD assets as the AUD strengthened through the commodity boom.',2001:'AUD/USD was 0.52 in 2001 — a headwind initially, but the AUD then strengthened through the following decade.',2002:'AUD/USD was 0.54 in 2002. The commodity cycle then drove AUD sharply higher.',2003:'AUD/USD was 0.65 in 2003 vs ~0.63 today — near-neutral currency effect on USD returns.',2004:'AUD/USD was 0.74 in 2004 vs ~0.63 today. ~17% extra return on USD stocks from currency alone.',2005:'AUD/USD was 0.77 in 2005 vs ~0.63 today. A <strong>~22% currency tailwind</strong> on top of USD stock returns.',2006:'AUD/USD was 0.76 in 2006 vs ~0.63 today. A <strong>~21% currency tailwind</strong> amplifies all USD returns.',2007:'AUD/USD was 0.88 in 2007 vs ~0.63 today. A <strong>~40% tailwind</strong> — currency can be as important as stock selection.',2008:'AUD/USD was 0.85 in 2008 vs ~0.63 today. A <strong>~35% tailwind</strong> — every USD gain converts to AUD at a premium.'}[year]||'';
   const cards=[
-    {num:'01',title:'Time in the Market',
-     body:'Your '+span+'-year journey proves that <strong>time is the most powerful force in investing</strong>. Even average companies become extraordinary over decades of compounding.'},
-    {num:'02',title:'Counter-intuitive Returns',
-     body:'Your best pick, <strong>'+bestRow.st.name+' ×'+bestRow.mult+'</strong>, likely wasn\'t the consensus choice. The highest returns come from companies the market underestimates.'},
-    {num:'03',title:'Diversification',
-     body:'Five industries, five different macro drivers. <strong>Correlation matters</strong> — when mining falls on China demand, healthcare runs on demographics and tech on innovation cycles.'},
+    {num:'01',title:'Time in the Market',body:'Your '+span+'-year journey proves that <strong>time is the most powerful force in investing</strong>. Even average companies become extraordinary over decades of compounding.'},
+    {num:'02',title:'Counter-intuitive Returns',body:'Your best pick, <strong>'+bestRow.st.name+' ×'+bestRow.mult+'</strong>, likely wasn\'t the consensus choice. The highest returns come from companies the market underestimates.'},
+    {num:'03',title:'Diversification',body:'Five industries, five different macro drivers. <strong>Correlation matters</strong> — when mining falls on China demand, healthcare runs on demographics and tech on innovation cycles.'},
     {num:'04',title:'Currency Effect ('+year+')',body:fxBody},
-    {num:'05',title:'Weakest Pick',
-     body:'<strong>'+worstRow.st.name+' ×'+worstRow.mult+'</strong> — '+(worstRow.mult<2?'barely grew in real terms. Familiar brands are not always sound investments.':'even this underperformer grew your capital. Diversification prevents one weak pick from defining the outcome.')},
-    {num:'06',title:'Consensus vs. Conviction',
-     body:'CSL, Cochlear, Fortescue, Macquarie — <strong>all dismissed by mainstream consensus</strong> at some point. Independent judgment, held with patience, is a genuinely durable edge.'},
+    {num:'05',title:'Weakest Pick',body:'<strong>'+worstRow.st.name+' ×'+worstRow.mult+'</strong> — '+(worstRow.mult<2?'barely grew in real terms. Familiar brands are not always sound investments.':'even this underperformer grew your capital. Diversification prevents one weak pick from defining the outcome.')},
+    {num:'06',title:'Consensus vs. Conviction',body:'CSL, Cochlear, Fortescue, Macquarie — <strong>all dismissed by mainstream consensus</strong> at some point. Independent judgment, held with patience, is a genuinely durable edge.'},
   ];
   const winners=rows.filter(r=>r.st.verdict==='win');
-  document.getElementById('tkFooter').textContent=
-    'You identified '+winners.length+' of 5 counter-intuitive winners. '+
-    (winners.length>=4?'Outstanding.':winners.length>=3?'Above average.':
-     winners.length>=2?'Room to develop contrarian thinking.':'The market always has more to teach us.')+
-    ' The best investors don\'t know more — they understand uncertainty better.';
+  document.getElementById('tkFooter').textContent='You identified '+winners.length+' of 5 counter-intuitive winners. '+(winners.length>=4?'Outstanding.':winners.length>=3?'Above average.':winners.length>=2?'Room to develop contrarian thinking.':'The market always has more to teach us.')+' The best investors don\'t know more — they understand uncertainty better.';
   const grid=document.getElementById('tkGrid');grid.innerHTML='';
   cards.forEach((c,i)=>{
     const el=document.createElement('div');el.className='tk-card';
     el.innerHTML=`<span class="tk-num">${c.num}</span><div class="tk-title">${c.title}</div><div class="tk-body">${c.body}</div>`;
-    grid.appendChild(el);
-    setTimeout(()=>el.classList.add('in'),90*i+200);
+    grid.appendChild(el);setTimeout(()=>el.classList.add('in'),90*i+200);
   });
 }
 
-/* ══════════════════════════════
-   LEADERBOARD
-══════════════════════════════ */
 function getLb(){return JSON.parse(localStorage.getItem(LB_KEY)||'[]');}
-function saveLb(score,yr){
-  let lb=getLb();
-  lb.push({score,yr,ts:Date.now()});
-  lb.sort((a,b)=>b.score-a.score);
-  lb=lb.slice(0,8);
-  localStorage.setItem(LB_KEY,JSON.stringify(lb));
-}
-function clearLb(){
-  localStorage.removeItem(LB_KEY);
-  const el=document.getElementById('lbRows');
-  if(el)el.innerHTML='<div class="lb-empty">Scores will appear here as the class plays.</div>';
-}
+function saveLb(score,yr){let lb=getLb();lb.push({score,yr,ts:Date.now()});lb.sort((a,b)=>b.score-a.score);lb=lb.slice(0,8);localStorage.setItem(LB_KEY,JSON.stringify(lb));}
+function clearLb(){localStorage.removeItem(LB_KEY);const el=document.getElementById('lbRows');if(el)el.innerHTML='<div class="lb-empty">Scores will appear here as the class plays.</div>';}
 
-/* ══════════════════════════════
-   COUNTER
-══════════════════════════════ */
 function counterEl(el,from,to,ms){
   const t=performance.now();
-  const f=now=>{
-    const p=Math.min((now-t)/ms,1),e=1-Math.pow(1-p,3);
-    el.textContent='$'+Math.round(from+(to-from)*e).toLocaleString();
-    if(p<1)requestAnimationFrame(f);
-  };
+  const f=now=>{const p=Math.min((now-t)/ms,1),e=1-Math.pow(1-p,3);el.textContent='$'+Math.round(from+(to-from)*e).toLocaleString();if(p<1)requestAnimationFrame(f);};
   requestAnimationFrame(f);
 }
 
-/* ══════════════════════════════
-   RESET
-══════════════════════════════ */
 function resetAll(){
   S={year:null,picks:{},alloc:{}};results=null;
   if(chartInst){chartInst.destroy();chartInst=null;}
