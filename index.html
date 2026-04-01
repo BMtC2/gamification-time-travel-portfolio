@@ -713,16 +713,17 @@ function buildAllocTable(){
         <span class="picker-opt-ticker">${opt.ticker}</span>
         ${isNA?'<span style="font-family:var(--fn-mono);font-size:9px;color:var(--t4)">Not listed</span>':''}`;
       if(!isNA){
-        optEl.addEventListener('click',()=>{
-          // Swap pick
-          const prev=S.picks[ind.id];
-          if(prev&&prev.name!==opt.name)delete S.alloc[prev.name];
-          S.picks[ind.id]=opt;
-          if(!S.alloc[opt.name])S.alloc[opt.name]=S.alloc[st.name]||2000;
-          if(prev&&prev.name!==opt.name)delete S.alloc[prev.name];
-          // Close picker and rebuild
-          buildAllocTable();
-        });
+       if(!isNA && !isSelected){
+  optEl.addEventListener('click',()=>{
+    const prevSt=S.picks[ind.id];
+    const prevAlloc=prevSt?(S.alloc[prevSt.name]||2000):2000;
+    if(prevSt) delete S.alloc[prevSt.name];
+    S.picks[ind.id]=opt;
+    S.alloc[opt.name]=prevAlloc;
+    buildAllocTable();
+  });
+}
+
       }
       picker.appendChild(optEl);
     });
