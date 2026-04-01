@@ -695,7 +695,7 @@ function buildAllocTable(){
     const dec=document.createElement('button');dec.className='ar-btn';dec.textContent='−';dec.disabled=amt<=MINV;
     const amtEl=document.createElement('div');amtEl.className='ar-amt';
     amtEl.innerHTML=`$${(amt/1000).toFixed(1)}k<small>${((amt/TOTAL)*100).toFixed(0)}%</small>`;
-    const inc=document.createElement('button');inc.className='ar-btn';inc.textContent='+';inc.disabled=tot+STEP>TOTAL;
+    const inc=document.createElement('button');inc.className='ar-btn';inc.textContent='+';inc.disabled=(TOTAL-tot)<STEP;
     const ctrl=document.createElement('div');ctrl.className='ar-ctrl';ctrl.append(dec,amtEl,inc);
 
     right.append(changeBtn,ctrl);
